@@ -35,8 +35,6 @@ Download the latest build from [GitHub Releases](https://github.com/Dream-of-Jul
 
 - `PomodoroBar_1.0 Beta 2.dmg`：主版本，适用于 macOS 26.0 或更新版本。<br>
   Main build for macOS 26.0 or later.
-- `PomodoroBarUniversal_1.0 Beta 2.dmg`：通用构建，包含 arm64 和 x86_64 架构。<br>
-  Universal build with both arm64 and x86_64 architectures.
 - `PomodoroBarLegacy_1.0 Beta 2.dmg`：旧系统版本，适用于 macOS 13.0 或更新版本。<br>
   Legacy build for macOS 13.0 or later.
 
