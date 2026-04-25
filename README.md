@@ -6,35 +6,48 @@ PomodoroBar is a lightweight macOS menu bar Pomodoro timer built with SwiftUI. I
 
 ![PomodoroBar screenshot](Assets/screenshot.png)
 
-## Features
+## 功能 / Features
 
-- 菜单栏倒计时，显示当前阶段图标和进度百分比
-- 支持专注、短休息、长休息三个阶段
-- 每轮结束后自动切换到下一个阶段
-- 每完成 4 轮专注后进入长休息
-- 支持开始/暂停、重置、跳过和退出
-- 自动保存当天完成的专注次数
-- 系统通知和提示音
-- 支持中文和英文界面
-- 提供本地 DMG 打包脚本
+- 菜单栏倒计时，显示当前阶段图标和进度百分比<br>
+  Menu bar countdown with the current phase icon and progress percentage.
+- 支持专注、短休息、长休息三个阶段<br>
+  Focus, short break, and long break phases.
+- 每轮结束后自动切换到下一个阶段，每完成 4 轮专注后进入长休息<br>
+  Automatic phase switching after each session, with a long break after every 4 focus rounds.
+- 支持开始、暂停、重置、跳过和退出<br>
+  Start, pause, reset, skip, and quit controls.
+- 自动保存当天完成的专注次数，并支持悬停后快速清除当天计数<br>
+  Saves the daily completed-focus count locally, with hover-to-clear support for today's count.
+- 首次冷启动时提示应用已在菜单栏运行<br>
+  Shows a first-launch hint so users can find the app in the menu bar.
+- 系统通知和提示音<br>
+  System notifications and sounds.
+- 支持简体中文和英文界面<br>
+  Simplified Chinese and English localization.
+- 提供本地 APP 和 DMG 打包脚本<br>
+  Local APP and DMG packaging scripts.
 
-## English
+## 下载 / Download
 
-- Menu bar countdown with phase icon and progress percentage
-- Focus, short break, and long break phases
-- Automatic phase switching after each session
-- Long break after every 4 focus rounds
-- Pause, reset, skip, and quit controls
-- Daily completed-focus count saved locally
-- System notifications and sounds
-- English and Simplified Chinese localization
-- DMG packaging scripts for local releases
+请从 [GitHub Releases](https://github.com/Dream-of-July/PomodoroBar/releases) 下载最新版本。
+
+Download the latest build from [GitHub Releases](https://github.com/Dream-of-July/PomodoroBar/releases).
+
+- `PomodoroBar_1.0 Beta 2.dmg`：主版本，适用于 macOS 26.0 或更新版本。<br>
+  Main build for macOS 26.0 or later.
+- `PomodoroBarUniversal_1.0 Beta 2.dmg`：通用构建，包含 arm64 和 x86_64 架构。<br>
+  Universal build with both arm64 and x86_64 architectures.
+- `PomodoroBarLegacy_1.0 Beta 2.dmg`：旧系统版本，适用于 macOS 13.0 或更新版本。<br>
+  Legacy build for macOS 13.0 or later.
 
 ## 系统要求 / Requirements
 
-- Xcode with Swift 6 support
-- Main target: macOS 26.0 or later
-- Legacy target: macOS 13.0 or later
+- Xcode，需支持 Swift 6<br>
+  Xcode with Swift 6 support.
+- 主版本：macOS 26.0 或更新版本<br>
+  Main target: macOS 26.0 or later.
+- 旧系统版本：macOS 13.0 或更新版本<br>
+  Legacy target: macOS 13.0 or later.
 
 ## 构建 / Build
 
@@ -44,11 +57,15 @@ Open `PomodoroBar.xcodeproj` in Xcode and run the `PomodoroBar` scheme.
 
 也可以使用命令行构建：
 
+You can also build from the command line:
+
 ```bash
 xcodebuild -project PomodoroBar.xcodeproj -scheme PomodoroBar -configuration Release build
 ```
 
 Legacy 版本：
+
+Legacy build:
 
 ```bash
 xcodebuild -project PomodoroBar.xcodeproj -scheme PomodoroBarLegacy -configuration Release build
@@ -62,18 +79,36 @@ xcodebuild -project PomodoroBar.xcodeproj -scheme PomodoroBarLegacy -configurati
 
 ## 打包 / Package
 
-生成本地 DMG：
+生成本地 APP 并安装到 `/Applications`：
+
+Build a local APP and install it to `/Applications`:
+
+```bash
+./script/package_app.sh
+```
+
+生成主版本和通用版本 DMG：
+
+Build the main and universal DMG files:
 
 ```bash
 ./script/package_dmg.sh
+```
+
+生成旧系统版本 DMG：
+
+Build the legacy DMG file:
+
+```bash
+./script/package_legacy_dmg.sh
 ```
 
 ## 注意 / Notes
 
 PomodoroBar 目前使用本地/开发者签名。如果公开分发未公证版本，用户可能需要在 macOS 的“隐私与安全性”里手动允许打开。
 
-PomodoroBar is distributed as a local/developer-signed macOS app. If you distribute a build publicly, users may need to allow it in macOS Privacy & Security unless you notarize the app with an Apple Developer account.
+PomodoroBar is currently local/developer signed. If you distribute an unnotarized build publicly, users may need to allow it manually in macOS Privacy & Security.
 
-## License
+## 许可证 / License
 
 MIT
