@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Codex/local workspace state
+.codex/
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Release artifacts
+dist/
+
+# Swift Package Manager, if added later
+.build/
+Package.resolved

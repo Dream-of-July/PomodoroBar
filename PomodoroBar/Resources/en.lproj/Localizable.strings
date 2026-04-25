@@ -1,0 +1,28 @@
+"phase.focus.title" = "Focus";
+"phase.shortBreak.title" = "Short Break";
+"phase.longBreak.title" = "Long Break";
+"phase.focus.shortTitle" = "Focus";
+"phase.shortBreak.shortTitle" = "Short";
+"phase.longBreak.shortTitle" = "Long";
+
+"status.ready" = "Ready";
+"status.running" = "Running";
+"status.paused" = "Paused";
+
+"action.start" = "Start";
+"action.pause" = "Pause";
+"action.reset" = "Reset";
+"action.skip" = "Skip";
+"action.quit" = "Quit";
+
+"timer.nextPhaseFormat" = "Next: %@";
+"timer.roundFormat" = "Round %d/4";
+
+"stats.todayCompletedFormat" = "%d today";
+"stats.minutesFormat" = "%d min";
+
+"notification.focusComplete.title" = "Focus complete";
+"notification.focusComplete.shortBreak.body" = "Nice work. Time for a short break.";
+"notification.focusComplete.longBreak.body" = "Nice work. Time for a long break.";
+"notification.breakComplete.title" = "Break complete";
+"notification.breakComplete.body" = "Ready for the next focus session.";

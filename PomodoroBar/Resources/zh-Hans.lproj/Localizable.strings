@@ -1,0 +1,28 @@
+"phase.focus.title" = "专注";
+"phase.shortBreak.title" = "短休息";
+"phase.longBreak.title" = "长休息";
+"phase.focus.shortTitle" = "专注";
+"phase.shortBreak.shortTitle" = "短休";
+"phase.longBreak.shortTitle" = "长休";
+
+"status.ready" = "就绪";
+"status.running" = "进行中";
+"status.paused" = "已暂停";
+
+"action.start" = "开始";
+"action.pause" = "暂停";
+"action.reset" = "重置";
+"action.skip" = "跳过";
+"action.quit" = "退出";
+
+"timer.nextPhaseFormat" = "下一个：%@";
+"timer.roundFormat" = "第 %d/4 轮";
+
+"stats.todayCompletedFormat" = "今日 %d 次";
+"stats.minutesFormat" = "%d 分钟";
+
+"notification.focusComplete.title" = "专注完成";
+"notification.focusComplete.shortBreak.body" = "做得不错。该短休息一下了。";
+"notification.focusComplete.longBreak.body" = "做得不错。该长休息一下了。";
+"notification.breakComplete.title" = "休息完成";
+"notification.breakComplete.body" = "准备开始下一轮专注。";
