@@ -1,4 +1,4 @@
-import AppKit
+@preconcurrency import AppKit
 import Foundation
 import Observation
 
@@ -16,11 +16,14 @@ final class PomodoroTimerStore {
     var restCycle: [PomodoroPhase] = [.shortBreak, .shortBreak, .shortBreak, .longBreak]
 
     @ObservationIgnored private var ticker: Task<Void, Never>?
+    @ObservationIgnored private var terminationObserver: NSObjectProtocol?
+    @ObservationIgnored private var lastSessionPersistenceDate: Date?
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private let calendar: Calendar
     private var previewProgress: Double?
 
     static let rhythmLengthRange = 2...6
+    private static let sessionPersistenceInterval: TimeInterval = 5
 
     private let completedKey = "todayCompletedCount"
     private let roundsKey = "completedFocusRounds"
@@ -44,6 +47,15 @@ final class PomodoroTimerStore {
     init(defaults: UserDefaults = .standard, calendar: Calendar = .current) {
         self.defaults = defaults
         self.calendar = calendar
+        terminationObserver = NotificationCenter.default.addObserver(
+            forName: NSApplication.willTerminateNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in
+                self?.persistTimerSession(force: true)
+            }
+        }
         loadDurationPreferences()
         loadPersistedState()
 
@@ -59,6 +71,9 @@ final class PomodoroTimerStore {
 
     deinit {
         ticker?.cancel()
+        if let terminationObserver {
+            NotificationCenter.default.removeObserver(terminationObserver)
+        }
     }
 
     var totalSeconds: Int {
@@ -317,6 +332,7 @@ final class PomodoroTimerStore {
     }
 
     func quit() {
+        persistTimerSession(force: true)
         NSApp.terminate(nil)
     }
 
@@ -403,7 +419,7 @@ final class PomodoroTimerStore {
 
         if remainingSeconds > 1 {
             remainingSeconds -= 1
-            persistTimerSession()
+            persistTimerSession(force: false)
         } else {
             advancePhaseAfterCompletion(mode: .automatic)
         }
@@ -469,11 +485,19 @@ final class PomodoroTimerStore {
         return true
     }
 
-    private func persistTimerSession() {
+    private func persistTimerSession(force: Bool = true) {
+        let now = Date()
+        if !force,
+           let lastSessionPersistenceDate,
+           now.timeIntervalSince(lastSessionPersistenceDate) < Self.sessionPersistenceInterval {
+            return
+        }
+
         defaults.set(phase.rawValue, forKey: sessionPhaseKey)
         defaults.set(status.rawValue, forKey: sessionStatusKey)
         defaults.set(remainingSeconds, forKey: sessionRemainingSecondsKey)
-        defaults.set(Date(), forKey: sessionDateKey)
+        defaults.set(now, forKey: sessionDateKey)
+        lastSessionPersistenceDate = now
     }
 
     private func persistDailyState() {
