@@ -1,9 +1,5 @@
 # PomodoroBar
 
-<p align="center">
-  <img src="Assets/app-icon.png" alt="PomodoroBar app icon" width="112">
-</p>
-
 PomodoroBar 是一个轻量的 macOS 菜单栏番茄钟，用 SwiftUI 构建。它不会出现在 Dock 里，可以直接在菜单栏显示倒计时，并在专注或休息结束时发送系统通知。
 
 PomodoroBar is a lightweight macOS menu bar Pomodoro timer built with SwiftUI. It stays out of the Dock, shows the current countdown in the menu bar, and sends a notification when a focus or break session ends.
