@@ -242,7 +242,7 @@ struct LegacyPomodoroPanelView: View {
                     .padding(.vertical, 3)
 
                 HStack {
-                    Text("\(LegacyPomodoroTimerStore.rhythmLengthRange.lowerBound)")
+                    Text(String(format: String(localized: "rhythm.minFormat"), LegacyPomodoroTimerStore.rhythmLengthRange.lowerBound))
                     Spacer()
                     Text(String(format: String(localized: "rhythm.maxFormat"), LegacyPomodoroTimerStore.rhythmLengthRange.upperBound))
                 }
@@ -583,7 +583,7 @@ struct LegacyPomodoroPanelView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             guard generation == timelineCenterGeneration else { return }
 
-            withAnimation(.linear(duration: 1.15)) {
+            withAnimation(.easeInOut(duration: 1.0)) {
                 proxy.scrollTo(position, anchor: .center)
             }
         }

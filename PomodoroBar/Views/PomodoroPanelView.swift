@@ -243,7 +243,7 @@ struct PomodoroPanelView: View {
                     .padding(.vertical, 3)
 
                 HStack {
-                    Text("\(PomodoroTimerStore.rhythmLengthRange.lowerBound)")
+                    Text(String(format: String(localized: "rhythm.minFormat"), PomodoroTimerStore.rhythmLengthRange.lowerBound))
                     Spacer()
                     Text(String(format: String(localized: "rhythm.maxFormat"), PomodoroTimerStore.rhythmLengthRange.upperBound))
                 }
@@ -584,7 +584,7 @@ struct PomodoroPanelView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             guard generation == timelineCenterGeneration else { return }
 
-            withAnimation(.linear(duration: 1.15)) {
+            withAnimation(.easeInOut(duration: 1.0)) {
                 proxy.scrollTo(position, anchor: .center)
             }
         }

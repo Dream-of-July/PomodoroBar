@@ -37,6 +37,7 @@
 "rhythm.frequencyValueFormat" = "%d 轮";
 "rhythm.sequenceLengthFormat" = "%d 个番茄";
 "rhythm.longBreakFrequencyFormat" = "当前时间线包含 %d 个番茄";
+"rhythm.minFormat" = "最低 %d";
 "rhythm.maxFormat" = "最高 %d";
 "rhythm.countFormat" = "x%d";
 "rhythm.timelineHint" = "拖动休息片段调整顺序，点击可切换短休/长休。";
