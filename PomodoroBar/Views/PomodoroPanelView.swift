@@ -593,12 +593,21 @@ struct PomodoroPanelView: View {
     }
 
     private func timelineCenterDuration(to position: Int) -> Double {
-        guard let centeredTimelinePosition else { return 1.05 }
+        guard let centeredTimelinePosition else { return 1.20 }
 
         let distance = abs(position - centeredTimelinePosition)
-        guard distance > 0 else { return 0.75 }
-
-        return max(0.95, 1.25 - Double(distance - 1) * 0.10)
+        switch distance {
+        case 0:
+            return 0.90
+        case 1:
+            return 2.10
+        case 2:
+            return 1.65
+        case 3:
+            return 1.25
+        default:
+            return 0.95
+        }
     }
 
 }
