@@ -12,6 +12,7 @@ struct LegacyPomodoroPanelView: View {
     @State private var isTimelinePointerInside = false
     @State private var timelineCenterGeneration = 0
     @State private var visibleTimelineCenterPosition: Int?
+    @State private var timelineContentOffset: CGFloat = 0
 
     private let panelWidth: CGFloat = 336
     private let panelPadding: CGFloat = 18
@@ -22,7 +23,6 @@ struct LegacyPomodoroPanelView: View {
     private let timelineItemWidth: CGFloat = 70
     private let timelineItemSpacing: CGFloat = 4
     private let timelineViewportWidth: CGFloat = 224
-    private let timelineCoordinateSpaceName = "syncedTimeline"
 
     var body: some View {
         VStack(spacing: 16) {
@@ -467,41 +467,73 @@ struct LegacyPomodoroPanelView: View {
     }
 
     private var syncedTimeline: some View {
-        ScrollViewReader { proxy in
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: timelineItemSpacing) {
-                    ForEach(0..<store.timelinePositionCount, id: \.self) { position in
-                        timelineItem(at: position)
-                            .id(position)
-                    }
-                }
-                .padding(4)
-                .contentShape(Capsule())
-                .simultaneousGesture(timelineSelectionGesture())
-            }
-            .coordinateSpace(name: timelineCoordinateSpaceName)
-            .background(.quaternary, in: Capsule())
-            .onPreferenceChange(TimelineItemCenterPreferenceKey.self) { centers in
-                updateVisibleTimelineCenterPosition(from: centers)
-            }
-            .onAppear {
-                let position = store.currentTimelinePositionInCycle
-                visibleTimelineCenterPosition = position
-                proxy.scrollTo(position, anchor: .center)
-            }
-            .onChange(of: store.currentTimelinePositionInCycle) { position in
-                scheduleTimelineCenter(position, proxy: proxy, delay: isTimelinePointerInside ? 1.6 : 0)
-            }
-            .onHover { isHovering in
-                isTimelinePointerInside = isHovering
-                hoveredTimelinePosition = isHovering ? hoveredTimelinePosition : nil
-
-                if !isHovering {
-                    scheduleTimelineCenter(store.currentTimelinePositionInCycle, proxy: proxy, delay: 0.5)
-                }
+        HStack(spacing: timelineItemSpacing) {
+            ForEach(0..<store.timelinePositionCount, id: \.self) { position in
+                timelineItem(at: position)
             }
         }
+        .padding(4)
+        .offset(x: -timelineContentOffset)
+        .frame(width: timelineViewportWidth, height: 38, alignment: .leading)
+        .contentShape(Capsule())
+        .clipped()
+        .background(.quaternary, in: Capsule())
+        .simultaneousGesture(timelineSelectionGesture())
+        .onAppear {
+            let position = store.currentTimelinePositionInCycle
+            visibleTimelineCenterPosition = position
+            timelineContentOffset = timelineOffset(centeredAt: position)
+        }
+        .onChange(of: store.currentTimelinePositionInCycle) { position in
+            scheduleTimelineCenter(position, delay: isTimelinePointerInside ? 1.6 : 0)
+        }
+        .onHover { isHovering in
+            isTimelinePointerInside = isHovering
+            hoveredTimelinePosition = isHovering ? hoveredTimelinePosition : nil
+
+            if !isHovering {
+                scheduleTimelineCenter(store.currentTimelinePositionInCycle, delay: 0.5)
+            }
+        }
+        .onChange(of: store.timelinePositionCount) { _ in
+            timelineContentOffset = min(timelineContentOffset, maxTimelineContentOffset)
+            visibleTimelineCenterPosition = nearestTimelinePositionToVisibleCenter()
+        }
         .frame(height: 38)
+    }
+
+    private var timelineContentWidth: CGFloat {
+        guard store.timelinePositionCount > 0 else { return 0 }
+
+        let itemCount = CGFloat(store.timelinePositionCount)
+        let spacingCount = CGFloat(max(store.timelinePositionCount - 1, 0))
+        return itemCount * timelineItemWidth + spacingCount * timelineItemSpacing + 8
+    }
+
+    private var maxTimelineContentOffset: CGFloat {
+        max(0, timelineContentWidth - timelineViewportWidth)
+    }
+
+    private func timelineOffset(centeredAt position: Int) -> CGFloat {
+        let itemCenterX = 4 + CGFloat(position) * (timelineItemWidth + timelineItemSpacing) + timelineItemWidth / 2
+        let unclampedOffset = itemCenterX - timelineViewportWidth / 2
+        return min(max(unclampedOffset, 0), maxTimelineContentOffset)
+    }
+
+    private func nearestTimelinePositionToVisibleCenter() -> Int? {
+        guard store.timelinePositionCount > 0 else { return nil }
+
+        let centerX = timelineContentOffset + timelineViewportWidth / 2
+        let rawPosition = ((centerX - 4 - timelineItemWidth / 2) / (timelineItemWidth + timelineItemSpacing)).rounded()
+        let maxIndex = store.timelinePositionCount - 1
+
+        return min(max(Int(rawPosition), 0), maxIndex)
+    }
+
+    private func updateVisibleTimelineCenterPosition() {
+        if let position = nearestTimelinePositionToVisibleCenter() {
+            visibleTimelineCenterPosition = position
+        }
     }
 
     private func timelineItem(at position: Int) -> some View {
@@ -534,14 +566,6 @@ struct LegacyPomodoroPanelView: View {
                 }
             }
             .contentShape(Capsule())
-            .background {
-                GeometryReader { geometry in
-                    Color.clear.preference(
-                        key: TimelineItemCenterPreferenceKey.self,
-                        value: [position: geometry.frame(in: .named(timelineCoordinateSpaceName)).midX]
-                    )
-                }
-            }
         }
         .buttonStyle(.plain)
         .onHover { isHovering in
@@ -582,7 +606,7 @@ struct LegacyPomodoroPanelView: View {
     private func timelinePosition(atX locationX: CGFloat) -> Int? {
         guard store.timelinePositionCount > 0 else { return nil }
 
-        let contentX = locationX - 4
+        let contentX = locationX + timelineContentOffset - 4
         let stride = timelineItemWidth + timelineItemSpacing
         let maxIndex = store.timelinePositionCount - 1
         let rawIndex = Int((contentX / stride).rounded(.down))
@@ -590,17 +614,19 @@ struct LegacyPomodoroPanelView: View {
         return min(max(rawIndex, 0), maxIndex)
     }
 
-    private func scheduleTimelineCenter(_ position: Int, proxy: ScrollViewProxy, delay: Double) {
+    private func scheduleTimelineCenter(_ position: Int, delay: Double) {
         timelineCenterGeneration += 1
         let generation = timelineCenterGeneration
         let animation = timelineCenterAnimation(to: position)
+        let targetOffset = timelineOffset(centeredAt: position)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             guard generation == timelineCenterGeneration else { return }
 
             withAnimation(animation) {
-                proxy.scrollTo(position, anchor: .center)
+                timelineContentOffset = targetOffset
             }
+            visibleTimelineCenterPosition = position
         }
     }
 
@@ -624,24 +650,4 @@ struct LegacyPomodoroPanelView: View {
         }
     }
 
-    private func updateVisibleTimelineCenterPosition(from centers: [Int: CGFloat]) {
-        guard !centers.isEmpty else { return }
-
-        let viewportCenter = timelineViewportWidth / 2
-        let nearest = centers.min { first, second in
-            abs(first.value - viewportCenter) < abs(second.value - viewportCenter)
-        }?.key
-
-        if let nearest {
-            visibleTimelineCenterPosition = nearest
-        }
-    }
-}
-
-private struct TimelineItemCenterPreferenceKey: PreferenceKey {
-    static let defaultValue: [Int: CGFloat] = [:]
-
-    static func reduce(value: inout [Int: CGFloat], nextValue: () -> [Int: CGFloat]) {
-        value.merge(nextValue(), uniquingKeysWith: { _, new in new })
-    }
 }
