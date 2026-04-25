@@ -594,32 +594,34 @@ struct PomodoroPanelView: View {
     private func scheduleTimelineCenter(_ position: Int, proxy: ScrollViewProxy, delay: Double) {
         timelineCenterGeneration += 1
         let generation = timelineCenterGeneration
-        let duration = timelineCenterDuration(to: position)
+        let animation = timelineCenterAnimation(to: position)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             guard generation == timelineCenterGeneration else { return }
 
-            withAnimation(.easeInOut(duration: duration)) {
+            withAnimation(animation) {
                 proxy.scrollTo(position, anchor: .center)
             }
         }
     }
 
-    private func timelineCenterDuration(to position: Int) -> Double {
-        guard let visibleTimelineCenterPosition else { return 1.20 }
+    private func timelineCenterAnimation(to position: Int) -> Animation {
+        guard let visibleTimelineCenterPosition else {
+            return .linear(duration: 1.40)
+        }
 
         let distance = abs(position - visibleTimelineCenterPosition)
         switch distance {
         case 0:
-            return 0.90
+            return .linear(duration: 1.10)
         case 1:
-            return 2.10
+            return .linear(duration: 3.20)
         case 2:
-            return 1.65
+            return .linear(duration: 2.35)
         case 3:
-            return 1.25
+            return .easeInOut(duration: 1.55)
         default:
-            return 0.95
+            return .easeInOut(duration: 1.00)
         }
     }
 
