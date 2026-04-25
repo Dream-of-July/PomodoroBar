@@ -11,7 +11,7 @@ struct PomodoroPanelView: View {
     @State private var hoveredTimelinePosition: Int?
     @State private var isTimelinePointerInside = false
     @State private var timelineCenterGeneration = 0
-    @State private var centeredTimelinePosition: Int?
+    @State private var visibleTimelineCenterPosition: Int?
 
     private let panelWidth: CGFloat = 336
     private let panelPadding: CGFloat = 18
@@ -21,6 +21,8 @@ struct PomodoroPanelView: View {
     private let rhythmDragStepWidth: CGFloat = 88
     private let timelineItemWidth: CGFloat = 70
     private let timelineItemSpacing: CGFloat = 4
+    private let timelineViewportWidth: CGFloat = 224
+    private let timelineCoordinateSpaceName = "syncedTimeline"
 
     var body: some View {
         VStack(spacing: 16) {
@@ -447,7 +449,7 @@ struct PomodoroPanelView: View {
     private var footer: some View {
         HStack(spacing: 8) {
             syncedTimeline
-                .frame(width: 224)
+                .frame(width: timelineViewportWidth)
 
             Spacer(minLength: 0)
 
@@ -478,10 +480,14 @@ struct PomodoroPanelView: View {
                 .contentShape(Capsule())
                 .simultaneousGesture(timelineSelectionGesture())
             }
+            .coordinateSpace(name: timelineCoordinateSpaceName)
             .background(.quaternary, in: Capsule())
+            .onPreferenceChange(TimelineItemCenterPreferenceKey.self) { centers in
+                updateVisibleTimelineCenterPosition(from: centers)
+            }
             .onAppear {
                 let position = store.currentTimelinePositionInCycle
-                centeredTimelinePosition = position
+                visibleTimelineCenterPosition = position
                 proxy.scrollTo(position, anchor: .center)
             }
             .onChange(of: store.currentTimelinePositionInCycle) { _, position in
@@ -529,6 +535,14 @@ struct PomodoroPanelView: View {
                 }
             }
             .contentShape(Capsule())
+            .background {
+                GeometryReader { geometry in
+                    Color.clear.preference(
+                        key: TimelineItemCenterPreferenceKey.self,
+                        value: [position: geometry.frame(in: .named(timelineCoordinateSpaceName)).midX]
+                    )
+                }
+            }
         }
         .buttonStyle(.plain)
         .onHover { isHovering in
@@ -588,14 +602,13 @@ struct PomodoroPanelView: View {
             withAnimation(.easeInOut(duration: duration)) {
                 proxy.scrollTo(position, anchor: .center)
             }
-            centeredTimelinePosition = position
         }
     }
 
     private func timelineCenterDuration(to position: Int) -> Double {
-        guard let centeredTimelinePosition else { return 1.20 }
+        guard let visibleTimelineCenterPosition else { return 1.20 }
 
-        let distance = abs(position - centeredTimelinePosition)
+        let distance = abs(position - visibleTimelineCenterPosition)
         switch distance {
         case 0:
             return 0.90
@@ -610,4 +623,25 @@ struct PomodoroPanelView: View {
         }
     }
 
+    private func updateVisibleTimelineCenterPosition(from centers: [Int: CGFloat]) {
+        guard !centers.isEmpty else { return }
+
+        let viewportCenter = timelineViewportWidth / 2
+        let nearest = centers.min { first, second in
+            abs(first.value - viewportCenter) < abs(second.value - viewportCenter)
+        }?.key
+
+        if let nearest {
+            visibleTimelineCenterPosition = nearest
+        }
+    }
+
+}
+
+private struct TimelineItemCenterPreferenceKey: PreferenceKey {
+    static let defaultValue: [Int: CGFloat] = [:]
+
+    static func reduce(value: inout [Int: CGFloat], nextValue: () -> [Int: CGFloat]) {
+        value.merge(nextValue(), uniquingKeysWith: { _, new in new })
+    }
 }
