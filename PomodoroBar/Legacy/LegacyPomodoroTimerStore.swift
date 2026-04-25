@@ -28,6 +28,10 @@ final class LegacyPomodoroTimerStore: ObservableObject {
     private let longBreakDurationKey = "longBreakDurationSeconds"
     private let restCycleKey = "restCycle"
     private let longBreakFrequencyKey = "longBreakFrequency"
+    private let sessionPhaseKey = "timerSessionPhase"
+    private let sessionStatusKey = "timerSessionStatus"
+    private let sessionRemainingSecondsKey = "timerSessionRemainingSeconds"
+    private let sessionDateKey = "timerSessionDate"
     private let notifier = PomodoroNotifier.shared
 
     private enum PhaseAdvanceMode {
@@ -38,10 +42,17 @@ final class LegacyPomodoroTimerStore: ObservableObject {
     init(defaults: UserDefaults = .standard, calendar: Calendar = .current) {
         self.defaults = defaults
         self.calendar = calendar
-        loadPersistedState()
         loadDurationPreferences()
-        remainingSeconds = durationSeconds(for: phase)
-        start()
+        loadPersistedState()
+
+        if loadPersistedTimerSession() {
+            if status == .running {
+                startTicker()
+            }
+        } else {
+            remainingSeconds = durationSeconds(for: phase)
+            start()
+        }
     }
 
     deinit {
@@ -127,6 +138,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
         case .running:
             status = .paused
             stopTicker()
+            persistTimerSession()
         }
     }
 
@@ -134,6 +146,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
         stopTicker()
         status = .idle
         remainingSeconds = durationSeconds(for: phase)
+        persistTimerSession()
     }
 
     func skip() {
@@ -152,6 +165,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
         let newRemainingSeconds = remainingSeconds(for: newProgress)
         if remainingSeconds != newRemainingSeconds {
             remainingSeconds = newRemainingSeconds
+            persistTimerSession()
         }
     }
 
@@ -204,6 +218,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
         } else {
             remainingSeconds = Int((Double(newDurationSeconds) * (1 - currentProgress)).rounded())
         }
+        persistTimerSession()
     }
 
     func resetDurationPreferences() {
@@ -219,6 +234,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
         } else {
             remainingSeconds = Int((Double(totalSeconds) * (1 - currentProgress)).rounded())
         }
+        persistTimerSession()
     }
 
     func setRhythmLength(_ length: Int) {
@@ -290,6 +306,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
         stopTicker()
         phase = newPhase
         remainingSeconds = durationSeconds(for: newPhase)
+        persistTimerSession()
 
         if shouldContinueRunning {
             start()
@@ -334,6 +351,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
 
     private func start() {
         status = .running
+        persistTimerSession()
         startTicker()
     }
 
@@ -358,6 +376,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
 
         remainingSeconds = durationSeconds(for: phase)
         persistDailyState()
+        persistTimerSession()
 
         if shouldContinueRunning {
             start()
@@ -383,6 +402,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
 
         if remainingSeconds > 1 {
             remainingSeconds -= 1
+            persistTimerSession()
         } else {
             advancePhaseAfterCompletion(mode: .automatic)
         }
@@ -404,6 +424,7 @@ final class LegacyPomodoroTimerStore: ObservableObject {
         }
 
         remainingSeconds = durationSeconds(for: phase)
+        persistTimerSession()
         switch mode {
         case .automatic:
             start()
@@ -422,6 +443,36 @@ final class LegacyPomodoroTimerStore: ObservableObject {
             completedFocusRounds = 0
             persistDailyState()
         }
+    }
+
+    private func loadPersistedTimerSession() -> Bool {
+        guard let sessionDate = defaults.object(forKey: sessionDateKey) as? Date,
+              calendar.isDateInToday(sessionDate),
+              let rawPhase = defaults.string(forKey: sessionPhaseKey),
+              let persistedPhase = PomodoroPhase(rawValue: rawPhase) else {
+            return false
+        }
+
+        phase = persistedPhase
+        let persistedRemainingSeconds = defaults.integer(forKey: sessionRemainingSecondsKey)
+        let phaseDuration = durationSeconds(for: phase)
+        remainingSeconds = min(phaseDuration, max(1, persistedRemainingSeconds))
+
+        if let rawStatus = defaults.string(forKey: sessionStatusKey),
+           let persistedStatus = TimerStatus(rawValue: rawStatus) {
+            status = persistedStatus
+        } else {
+            status = .running
+        }
+
+        return true
+    }
+
+    private func persistTimerSession() {
+        defaults.set(phase.rawValue, forKey: sessionPhaseKey)
+        defaults.set(status.rawValue, forKey: sessionStatusKey)
+        defaults.set(remainingSeconds, forKey: sessionRemainingSecondsKey)
+        defaults.set(Date(), forKey: sessionDateKey)
     }
 
     private func persistDailyState() {
