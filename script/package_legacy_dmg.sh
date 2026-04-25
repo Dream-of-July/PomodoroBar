@@ -4,7 +4,7 @@ set -euo pipefail
 TARGET_NAME="PomodoroBarLegacy"
 APP_NAME="PomodoroBar Legacy"
 DMG_BASENAME="PomodoroBarLegacy"
-APP_VERSION="v1.0-beta"
+APP_VERSION="1.0 Beta 2"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$ROOT_DIR/PomodoroBar.xcodeproj"
 DERIVED_DATA="$ROOT_DIR/build/DerivedDataLegacy"

@@ -2,12 +2,17 @@
 set -euo pipefail
 
 APP_NAME="PomodoroBar"
-APP_VERSION="v1.0-beta"
+APP_VERSION="1.0 Beta 2"
+UNIVERSAL_BASENAME="PomodoroBarUniversal"
+UNIVERSAL_APP_NAME="PomodoroBar Universal"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DIST_DIR="$ROOT_DIR/dist"
 APP_PATH="$DIST_DIR/$APP_NAME.app"
 DMG_PATH="$DIST_DIR/$APP_NAME.dmg"
 VERSIONED_DMG_PATH="$DIST_DIR/${APP_NAME}_${APP_VERSION}.dmg"
+UNIVERSAL_APP_PATH="$DIST_DIR/$UNIVERSAL_APP_NAME.app"
+UNIVERSAL_DMG_PATH="$DIST_DIR/$UNIVERSAL_BASENAME.dmg"
+UNIVERSAL_VERSIONED_DMG_PATH="$DIST_DIR/${UNIVERSAL_BASENAME}_${APP_VERSION}.dmg"
 PACKAGE_ROOT="/tmp/$APP_NAME-package"
 SIGNED_APP="$PACKAGE_ROOT/$APP_NAME.app"
 TMP_DMG="/tmp/$APP_NAME.tmp.dmg"
@@ -17,7 +22,7 @@ STAGING_DIR="$PACKAGE_ROOT/dmg"
 
 "$ROOT_DIR/script/package_app.sh"
 
-rm -rf "$STAGING_DIR" "$DMG_PATH" "$VERSIONED_DMG_PATH" "$TMP_DMG" "$TMP_FINAL_DMG"
+rm -rf "$STAGING_DIR" "$DMG_PATH" "$VERSIONED_DMG_PATH" "$UNIVERSAL_APP_PATH" "$UNIVERSAL_DMG_PATH" "$UNIVERSAL_VERSIONED_DMG_PATH" "$TMP_DMG" "$TMP_FINAL_DMG"
 mkdir -p "$STAGING_DIR"
 find "$DIST_DIR" -maxdepth 1 -name "${APP_NAME}_v*.dmg" ! -name "${APP_NAME}_${APP_VERSION}.dmg" -delete
 
@@ -42,7 +47,13 @@ ln -s /Applications "$STAGING_DIR/Applications"
 
 /bin/cp "$TMP_FINAL_DMG" "$DMG_PATH"
 /bin/cp "$TMP_FINAL_DMG" "$VERSIONED_DMG_PATH"
+/usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$UNIVERSAL_APP_PATH"
+/bin/cp "$TMP_FINAL_DMG" "$UNIVERSAL_DMG_PATH"
+/bin/cp "$TMP_FINAL_DMG" "$UNIVERSAL_VERSIONED_DMG_PATH"
 rm -rf "$STAGING_DIR" "$TMP_DMG" "$TMP_FINAL_DMG"
 
 echo "DMG: $DMG_PATH"
 echo "Versioned DMG: $VERSIONED_DMG_PATH"
+echo "Universal app: $UNIVERSAL_APP_PATH"
+echo "Universal DMG: $UNIVERSAL_DMG_PATH"
+echo "Universal versioned DMG: $UNIVERSAL_VERSIONED_DMG_PATH"

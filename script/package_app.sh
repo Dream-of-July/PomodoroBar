@@ -2,7 +2,7 @@
 set -euo pipefail
 
 APP_NAME="PomodoroBar"
-APP_VERSION="v1.0-beta"
+APP_VERSION="1.0 Beta 2"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$ROOT_DIR/PomodoroBar.xcodeproj"
 DERIVED_DATA="$ROOT_DIR/build/DerivedData"
@@ -19,6 +19,7 @@ xcodebuild \
   -project "$PROJECT" \
   -scheme "$APP_NAME" \
   -configuration Release \
+  -destination "generic/platform=macOS" \
   -derivedDataPath "$DERIVED_DATA" \
   CODE_SIGNING_ALLOWED=NO \
   build
@@ -31,6 +32,10 @@ mkdir -p "$PACKAGE_ROOT"
 
 /usr/bin/xattr -cr "$SIGNED_APP"
 /usr/bin/codesign --force --deep --sign - "$SIGNED_APP"
+
+/usr/bin/lipo -info "$SIGNED_APP/Contents/MacOS/$APP_NAME" | /usr/bin/grep -q "arm64"
+/usr/bin/lipo -info "$SIGNED_APP/Contents/MacOS/$APP_NAME" | /usr/bin/grep -q "x86_64"
+
 /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$DIST_APP"
 
 rm -rf "$APPLICATIONS_APP"

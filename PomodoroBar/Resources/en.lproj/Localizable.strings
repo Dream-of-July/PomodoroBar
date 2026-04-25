@@ -14,12 +14,22 @@
 "action.reset" = "Reset";
 "action.skip" = "Skip";
 "action.quit" = "Quit";
+"action.cancel" = "Cancel";
 
 "timer.nextPhaseFormat" = "Next: %@";
 "timer.roundFormat" = "Round %d/4";
 
 "stats.todayCompletedFormat" = "%d today";
 "stats.minutesFormat" = "%d min";
+"stats.clearToday.inlineAction" = "Reset";
+"stats.clearToday.help" = "Clear today's completed count";
+"stats.clearToday.confirmTitle" = "Clear today's completed count?";
+"stats.clearToday.confirmMessage" = "This resets today's completed count and the current 4-round progress.";
+"stats.clearToday.confirmAction" = "Clear";
+
+"onboarding.menuBarTip.title" = "PomodoroBar is in the menu bar";
+"onboarding.menuBarTip.message" = "Click the timer in the menu bar to start, pause, or check progress.";
+"onboarding.menuBarTip.dismiss" = "Got it";
 
 "notification.focusComplete.title" = "Focus complete";
 "notification.focusComplete.shortBreak.body" = "Nice work. Time for a short break.";

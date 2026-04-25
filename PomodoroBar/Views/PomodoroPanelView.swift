@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct PomodoroPanelView: View {
@@ -5,6 +6,7 @@ struct PomodoroPanelView: View {
     @Namespace private var phaseSelectorNamespace
     @GestureState private var isPhaseSelectorPressed = false
     @State private var pendingPhase: PomodoroPhase?
+    @State private var isHoveringTodayCompletedCount = false
 
     private let panelWidth: CGFloat = 336
     private let panelPadding: CGFloat = 18
@@ -73,10 +75,34 @@ struct PomodoroPanelView: View {
 
     private var metadataRow: some View {
         HStack {
-            Label(
-                String(format: String(localized: "stats.todayCompletedFormat"), store.todayCompletedCount),
-                systemImage: "checkmark.circle.fill"
-            )
+            Button {
+                guard store.todayCompletedCount > 0 else { return }
+
+                if confirmClearTodayCompletedCount() {
+                    store.clearTodayCompletedCount()
+                }
+            } label: {
+                Label(
+                    todayCompletedCountTitle,
+                    systemImage: todayCompletedCountSystemImage
+                )
+                .frame(height: metadataActionHeight)
+                .padding(.horizontal, 7)
+                .background {
+                    if isShowingClearTodayAction {
+                        Capsule()
+                            .fill(Color.red.opacity(0.12))
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+            .disabled(store.todayCompletedCount == 0)
+            .foregroundStyle(todayCompletedCountForegroundStyle)
+            .help(String(localized: "stats.clearToday.help"))
+            .onHover { isHovering in
+                isHoveringTodayCompletedCount = isHovering
+            }
+
             Spacer()
             Label(
                 String(format: String(localized: "stats.minutesFormat"), store.totalSeconds / 60),
@@ -85,6 +111,44 @@ struct PomodoroPanelView: View {
         }
         .font(.caption)
         .foregroundStyle(.secondary)
+        .frame(height: metadataActionHeight)
+    }
+
+    private let metadataActionHeight: CGFloat = 22
+
+    private var todayCompletedCountTitle: String {
+        if isShowingClearTodayAction {
+            return String(localized: "stats.clearToday.inlineAction")
+        }
+
+        return String(format: String(localized: "stats.todayCompletedFormat"), store.todayCompletedCount)
+    }
+
+    private var todayCompletedCountSystemImage: String {
+        isShowingClearTodayAction ? "trash.fill" : "checkmark.circle.fill"
+    }
+
+    private var todayCompletedCountForegroundStyle: AnyShapeStyle {
+        if isShowingClearTodayAction {
+            return AnyShapeStyle(Color.red)
+        }
+
+        return AnyShapeStyle(.secondary)
+    }
+
+    private var isShowingClearTodayAction: Bool {
+        isHoveringTodayCompletedCount && store.todayCompletedCount > 0
+    }
+
+    private func confirmClearTodayCompletedCount() -> Bool {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = String(localized: "stats.clearToday.confirmTitle")
+        alert.informativeText = String(localized: "stats.clearToday.confirmMessage")
+        alert.addButton(withTitle: String(localized: "stats.clearToday.confirmAction"))
+        alert.addButton(withTitle: String(localized: "action.cancel"))
+
+        return alert.runModal() == .alertFirstButtonReturn
     }
 
     private var controls: some View {

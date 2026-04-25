@@ -93,6 +93,12 @@ final class LegacyPomodoroTimerStore: ObservableObject {
         advancePhaseAfterCompletion(mode: .manual)
     }
 
+    func clearTodayCompletedCount() {
+        todayCompletedCount = 0
+        completedFocusRounds = 0
+        persistDailyState()
+    }
+
     func selectPhase(_ newPhase: PomodoroPhase) {
         let shouldContinueRunning = status == .running
 
