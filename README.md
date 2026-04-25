@@ -68,8 +68,6 @@ xcodebuild -project PomodoroBar.xcodeproj -scheme PomodoroBarLegacy -configurati
 ./script/package_dmg.sh
 ```
 
-打包文件会输出到 `dist/`。Release 产物不会提交到 Git 仓库，请通过 GitHub Releases 上传 DMG。
-
 ## 注意 / Notes
 
 PomodoroBar 目前使用本地/开发者签名。如果公开分发未公证版本，用户可能需要在 macOS 的“隐私与安全性”里手动允许打开。
