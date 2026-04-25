@@ -553,7 +553,7 @@ struct PomodoroPanelView: View {
     private func snapTimeline(to position: Int) {
         guard position != store.currentTimelinePositionInCycle else { return }
 
-        withAnimation(.linear(duration: 0.42)) {
+        withAnimation(.easeInOut(duration: 0.55)) {
             store.moveToTimelinePositionInCurrentCycle(position)
         }
     }
@@ -584,7 +584,7 @@ struct PomodoroPanelView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             guard generation == timelineCenterGeneration else { return }
 
-            withAnimation(.easeInOut(duration: 1.0)) {
+            withAnimation(.easeInOut(duration: 1.25)) {
                 proxy.scrollTo(position, anchor: .center)
             }
         }
