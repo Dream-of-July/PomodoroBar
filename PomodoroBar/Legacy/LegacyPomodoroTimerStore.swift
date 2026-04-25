@@ -155,7 +155,6 @@ final class LegacyPomodoroTimerStore: ObservableObject {
 
     func clearTodayCompletedCount() {
         todayCompletedCount = 0
-        completedFocusRounds = 0
         persistDailyState()
     }
 

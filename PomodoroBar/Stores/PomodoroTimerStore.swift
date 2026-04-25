@@ -157,7 +157,6 @@ final class PomodoroTimerStore {
 
     func clearTodayCompletedCount() {
         todayCompletedCount = 0
-        completedFocusRounds = 0
         persistDailyState()
     }
 

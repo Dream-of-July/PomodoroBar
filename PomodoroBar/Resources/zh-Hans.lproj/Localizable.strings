@@ -25,7 +25,7 @@
 "stats.clearToday.inlineAction" = "重置";
 "stats.clearToday.help" = "清除今日完成次数";
 "stats.clearToday.confirmTitle" = "清除今日完成次数？";
-"stats.clearToday.confirmMessage" = "这会把今日完成次数和当前节奏进度归零。";
+"stats.clearToday.confirmMessage" = "这只会清除今日完成次数，不会改变当前阶段和节奏位置。";
 "stats.clearToday.confirmAction" = "清除";
 
 "duration.edit.help" = "修改倒计时时长";

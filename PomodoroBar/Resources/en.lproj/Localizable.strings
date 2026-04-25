@@ -25,7 +25,7 @@
 "stats.clearToday.inlineAction" = "Reset";
 "stats.clearToday.help" = "Clear today's completed count";
 "stats.clearToday.confirmTitle" = "Clear today's completed count?";
-"stats.clearToday.confirmMessage" = "This resets today's completed count and the current rhythm progress.";
+"stats.clearToday.confirmMessage" = "This only clears today's completed count. The current phase and rhythm position stay unchanged.";
 "stats.clearToday.confirmAction" = "Clear";
 
 "duration.edit.help" = "Edit timer durations";
