@@ -35,7 +35,7 @@ struct PomodoroPanelView: View {
 
     private var phaseHeader: some View {
         HStack(spacing: 10) {
-            Image(systemName: store.phase.statusIcon)
+            Image(systemName: store.phase.statusIcon(progress: store.progress))
                 .font(.title2.weight(.semibold))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color.accentColor)
@@ -238,7 +238,7 @@ struct PomodoroPanelView: View {
         let isSelected = selectedPhaseForDisplay == phase
 
         return HStack(spacing: 5) {
-            Image(systemName: phase.statusIcon)
+            Image(systemName: phaseSelectorIcon(for: phase))
                 .font(.callout.weight(isSelected ? .semibold : .medium))
                 .symbolRenderingMode(.hierarchical)
 
@@ -264,6 +264,14 @@ struct PomodoroPanelView: View {
             }
         }
         .contentShape(Capsule())
+    }
+
+    private func phaseSelectorIcon(for phase: PomodoroPhase) -> String {
+        guard phase == .focus, store.phase == .focus else {
+            return phase.statusIcon
+        }
+
+        return PomodoroPhase.focusHourglassSymbol(progress: store.progress)
     }
 
     private var selectedPhaseForDisplay: PomodoroPhase {

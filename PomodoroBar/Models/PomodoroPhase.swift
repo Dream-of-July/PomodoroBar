@@ -32,7 +32,7 @@ enum PomodoroPhase: String, CaseIterable, Identifiable {
     var statusIcon: String {
         switch self {
         case .focus:
-            "timer"
+            Self.focusHourglassSymbol(progress: 0)
         case .shortBreak:
             "cup.and.saucer.fill"
         case .longBreak:
@@ -43,11 +43,42 @@ enum PomodoroPhase: String, CaseIterable, Identifiable {
     var menuBarSymbol: String {
         switch self {
         case .focus:
-            "timer"
+            Self.focusHourglassSymbol(progress: 0)
         case .shortBreak:
             "cup.and.saucer"
         case .longBreak:
             "moon.zzz"
+        }
+    }
+
+    func statusIcon(progress: Double) -> String {
+        switch self {
+        case .focus:
+            Self.focusHourglassSymbol(progress: progress)
+        case .shortBreak, .longBreak:
+            statusIcon
+        }
+    }
+
+    func menuBarSymbol(progress: Double) -> String {
+        switch self {
+        case .focus:
+            Self.focusHourglassSymbol(progress: progress)
+        case .shortBreak, .longBreak:
+            menuBarSymbol
+        }
+    }
+
+    static func focusHourglassSymbol(progress: Double) -> String {
+        let clampedProgress = min(1, max(0, progress))
+
+        switch clampedProgress {
+        case ..<0.34:
+            return "hourglass.bottomhalf.filled"
+        case ..<0.67:
+            return "hourglass"
+        default:
+            return "hourglass.tophalf.filled"
         }
     }
 

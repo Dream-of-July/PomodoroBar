@@ -5,7 +5,7 @@ struct StatusLabelView: View {
 
     var body: some View {
         HStack(spacing: 5) {
-            Image(systemName: store.phase.menuBarSymbol)
+            Image(systemName: store.phase.menuBarSymbol(progress: store.progress))
                 .imageScale(.medium)
 
             Text(store.formattedRemainingTime)

@@ -14,8 +14,8 @@
 		1A1000050000000000000005 /* StatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000050000000000000005 /* StatusLabelView.swift */; };
 		1A1000060000000000000006 /* PomodoroPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000060000000000000006 /* PomodoroPanelView.swift */; };
 		1A1000070000000000000007 /* PomodoroNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000090000000000000009 /* PomodoroNotifier.swift */; };
-		1A1000080000000000000008 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1A2000100000000000000010 /* AppIcon.icns */; };
 		1A1000090000000000000009 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A8000010000000000000001 /* Localizable.strings */; };
+		1A1000110000000000000011 /* PomodoroBar.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1A2000140000000000000014 /* PomodoroBar.icon */; };
 		1B1000010000000000000001 /* PomodoroBarLegacyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2000010000000000000001 /* PomodoroBarLegacyApp.swift */; };
 		1B1000020000000000000002 /* LegacyPomodoroTimerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2000020000000000000002 /* LegacyPomodoroTimerStore.swift */; };
 		1B1000030000000000000003 /* LegacyStatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2000030000000000000003 /* LegacyStatusLabelView.swift */; };
@@ -23,8 +23,8 @@
 		1B1000050000000000000005 /* PomodoroPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000020000000000000002 /* PomodoroPhase.swift */; };
 		1B1000060000000000000006 /* TimerStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000030000000000000003 /* TimerStatus.swift */; };
 		1B1000070000000000000007 /* PomodoroNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000090000000000000009 /* PomodoroNotifier.swift */; };
-		1B1000080000000000000008 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1A2000100000000000000010 /* AppIcon.icns */; };
 		1B1000090000000000000009 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A8000010000000000000001 /* Localizable.strings */; };
+		1B1000110000000000000011 /* PomodoroBar.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1A2000140000000000000014 /* PomodoroBar.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,9 +37,9 @@
 		1A2000070000000000000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A2000080000000000000008 /* PomodoroBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PomodoroBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A2000090000000000000009 /* PomodoroNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroNotifier.swift; sourceTree = "<group>"; };
-		1A2000100000000000000010 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		1A2000110000000000000011 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1A2000120000000000000012 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		1A2000140000000000000014 /* PomodoroBar.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = PomodoroBar.icon; sourceTree = "<group>"; };
 		1B2000010000000000000001 /* PomodoroBarLegacyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroBarLegacyApp.swift; sourceTree = "<group>"; };
 		1B2000020000000000000002 /* LegacyPomodoroTimerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyPomodoroTimerStore.swift; sourceTree = "<group>"; };
 		1B2000030000000000000003 /* LegacyStatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyStatusLabelView.swift; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				1A2000070000000000000007 /* Info.plist */,
-				1A2000100000000000000010 /* AppIcon.icns */,
+				1A2000140000000000000014 /* PomodoroBar.icon */,
 				1A8000010000000000000001 /* Localizable.strings */,
 			);
 			path = Resources;
@@ -241,7 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A1000080000000000000008 /* AppIcon.icns in Resources */,
+				1A1000110000000000000011 /* PomodoroBar.icon in Resources */,
 				1A1000090000000000000009 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,7 +250,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B1000080000000000000008 /* AppIcon.icns in Resources */,
+				1B1000110000000000000011 /* PomodoroBar.icon in Resources */,
 				1B1000090000000000000009 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,10 +415,12 @@
 		1A9000060000000000000006 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = PomodoroBar;
+				ASSETCATALOG_COMPILER_STANDALONE_ICON_BEHAVIOR = all;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -429,7 +431,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = "1.0 Beta 2";
+				MARKETING_VERSION = "1.0 Beta 3";
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = macosx;
@@ -441,10 +443,12 @@
 		1A9000070000000000000007 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = PomodoroBar;
+				ASSETCATALOG_COMPILER_STANDALONE_ICON_BEHAVIOR = all;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -455,7 +459,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = "1.0 Beta 2";
+				MARKETING_VERSION = "1.0 Beta 3";
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = macosx;
@@ -471,10 +475,12 @@
 					arm64,
 					x86_64,
 				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = PomodoroBar;
+				ASSETCATALOG_COMPILER_STANDALONE_ICON_BEHAVIOR = all;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -485,7 +491,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = "1.0 Beta 2";
+				MARKETING_VERSION = "1.0 Beta 3";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar.Legacy;
 				PRODUCT_NAME = "PomodoroBar Legacy";
@@ -502,10 +508,12 @@
 					arm64,
 					x86_64,
 				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = PomodoroBar;
+				ASSETCATALOG_COMPILER_STANDALONE_ICON_BEHAVIOR = all;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -516,7 +524,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = "1.0 Beta 2";
+				MARKETING_VERSION = "1.0 Beta 3";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar.Legacy;
 				PRODUCT_NAME = "PomodoroBar Legacy";
