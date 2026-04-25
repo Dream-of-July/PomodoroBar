@@ -17,15 +17,31 @@
 "action.cancel" = "取消";
 
 "timer.nextPhaseFormat" = "下一个：%@";
-"timer.roundFormat" = "第 %d/4 轮";
+"timer.roundFormat" = "第 %d/%d 轮";
+"timer.progress.help" = "拖动调整剩余时间";
 
 "stats.todayCompletedFormat" = "今日 %d 次";
 "stats.minutesFormat" = "%d 分钟";
 "stats.clearToday.inlineAction" = "重置";
 "stats.clearToday.help" = "清除今日完成次数";
 "stats.clearToday.confirmTitle" = "清除今日完成次数？";
-"stats.clearToday.confirmMessage" = "这会把今日完成次数和当前 4 轮进度归零。";
+"stats.clearToday.confirmMessage" = "这会把今日完成次数和当前节奏进度归零。";
 "stats.clearToday.confirmAction" = "清除";
+
+"duration.edit.help" = "修改倒计时时长";
+"duration.editor.title" = "倒计时时长";
+"duration.resetDefaults" = "恢复默认";
+
+"rhythm.edit.help" = "调整长休息频率";
+"rhythm.editor.title" = "节奏";
+"rhythm.frequencyValueFormat" = "%d 轮";
+"rhythm.sequenceLengthFormat" = "%d 个番茄";
+"rhythm.longBreakFrequencyFormat" = "当前时间线包含 %d 个番茄";
+"rhythm.maxFormat" = "最高 %d";
+"rhythm.countFormat" = "x%d";
+"rhythm.timelineHint" = "拖动休息片段调整顺序，点击可切换短休/长休。";
+"rhythm.toggleBreak.help" = "点击切换休息类型，拖动调整顺序";
+"rhythm.resetDefaults" = "恢复默认节奏";
 
 "onboarding.menuBarTip.title" = "PomodoroBar 已在顶栏运行";
 "onboarding.menuBarTip.message" = "点击顶栏里的番茄钟即可开始、暂停或查看进度。";

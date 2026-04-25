@@ -4,8 +4,11 @@ import SwiftUI
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
-        PomodoroNotifier.shared.requestAuthorization()
-        MenuBarOnboardingTipPresenter.shared.showIfNeeded()
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(700))
+            PomodoroNotifier.shared.requestAuthorization()
+            MenuBarOnboardingTipPresenter.shared.showIfNeeded()
+        }
     }
 }
 

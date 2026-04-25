@@ -5,7 +5,7 @@ struct StatusLabelView: View {
 
     var body: some View {
         HStack(spacing: 5) {
-            Image(systemName: store.phase.menuBarSymbol(progress: store.progress))
+            Image(systemName: store.phase.menuBarSymbol(progress: store.displayedProgress))
                 .imageScale(.medium)
 
             Text(store.formattedRemainingTime)
@@ -20,6 +20,6 @@ struct StatusLabelView: View {
     }
 
     private var progressPercent: Int {
-        min(100, max(0, Int((store.progress * 100).rounded())))
+        min(100, max(0, Int((store.displayedProgress * 100).rounded())))
     }
 }

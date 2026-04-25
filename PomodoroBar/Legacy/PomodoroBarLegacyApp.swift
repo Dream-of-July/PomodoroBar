@@ -4,7 +4,10 @@ import SwiftUI
 final class LegacyAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
-        PomodoroNotifier.shared.requestAuthorization()
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(700))
+            PomodoroNotifier.shared.requestAuthorization()
+        }
     }
 }
 

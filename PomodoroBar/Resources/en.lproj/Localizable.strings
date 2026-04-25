@@ -17,15 +17,31 @@
 "action.cancel" = "Cancel";
 
 "timer.nextPhaseFormat" = "Next: %@";
-"timer.roundFormat" = "Round %d/4";
+"timer.roundFormat" = "Round %d/%d";
+"timer.progress.help" = "Drag to adjust the remaining time";
 
 "stats.todayCompletedFormat" = "%d today";
 "stats.minutesFormat" = "%d min";
 "stats.clearToday.inlineAction" = "Reset";
 "stats.clearToday.help" = "Clear today's completed count";
 "stats.clearToday.confirmTitle" = "Clear today's completed count?";
-"stats.clearToday.confirmMessage" = "This resets today's completed count and the current 4-round progress.";
+"stats.clearToday.confirmMessage" = "This resets today's completed count and the current rhythm progress.";
 "stats.clearToday.confirmAction" = "Clear";
+
+"duration.edit.help" = "Edit timer durations";
+"duration.editor.title" = "Timer Durations";
+"duration.resetDefaults" = "Restore Defaults";
+
+"rhythm.edit.help" = "Adjust long break frequency";
+"rhythm.editor.title" = "Rhythm";
+"rhythm.frequencyValueFormat" = "%d rounds";
+"rhythm.sequenceLengthFormat" = "%d pomodoros";
+"rhythm.longBreakFrequencyFormat" = "Timeline has %d pomodoros";
+"rhythm.maxFormat" = "Max %d";
+"rhythm.countFormat" = "x%d";
+"rhythm.timelineHint" = "Drag break clips to reorder. Click a break to switch short/long.";
+"rhythm.toggleBreak.help" = "Click to switch break type, drag to reorder";
+"rhythm.resetDefaults" = "Restore Default Rhythm";
 
 "onboarding.menuBarTip.title" = "PomodoroBar is in the menu bar";
 "onboarding.menuBarTip.message" = "Click the timer in the menu bar to start, pause, or check progress.";
