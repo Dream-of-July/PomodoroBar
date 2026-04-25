@@ -13,6 +13,9 @@ xcuserdata/
 # Release artifacts
 dist/
 
+# Local exported design assets
+icon/
+
 # Swift Package Manager, if added later
 .build/
 Package.resolved
