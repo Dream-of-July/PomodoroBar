@@ -13,6 +13,7 @@ struct PomodoroPanelView: View {
     @State private var timelineCenterGeneration = 0
     @State private var visibleTimelineCenterPosition: Int?
     @State private var timelineContentOffset: CGFloat = 0
+    @State private var timelineDragStartOffset: CGFloat?
 
     private let panelWidth: CGFloat = 336
     private let panelPadding: CGFloat = 18
@@ -23,6 +24,7 @@ struct PomodoroPanelView: View {
     private let timelineItemWidth: CGFloat = 70
     private let timelineItemSpacing: CGFloat = 4
     private let timelineViewportWidth: CGFloat = 224
+    private let timelineDragThreshold: CGFloat = 5
 
     var body: some View {
         VStack(spacing: 16) {
@@ -479,7 +481,7 @@ struct PomodoroPanelView: View {
         .contentShape(Capsule())
         .clipped()
         .background(.quaternary, in: Capsule())
-        .simultaneousGesture(timelineSelectionGesture())
+        .gesture(timelineInteractionGesture())
         .onAppear {
             let position = store.currentTimelinePositionInCycle
             visibleTimelineCenterPosition = position
@@ -535,6 +537,10 @@ struct PomodoroPanelView: View {
         if let position = nearestTimelinePositionToVisibleCenter() {
             visibleTimelineCenterPosition = position
         }
+    }
+
+    private func clampedTimelineOffset(_ offset: CGFloat) -> CGFloat {
+        min(max(offset, 0), maxTimelineContentOffset)
     }
 
     private func timelineItem(at position: Int) -> some View {
@@ -596,9 +602,28 @@ struct PomodoroPanelView: View {
         store.moveToTimelinePositionInCurrentCycle(position)
     }
 
-    private func timelineSelectionGesture() -> some Gesture {
+    private func timelineInteractionGesture() -> some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
+                guard abs(value.translation.width) > timelineDragThreshold else { return }
+
+                if timelineDragStartOffset == nil {
+                    timelineDragStartOffset = timelineContentOffset
+                    timelineCenterGeneration += 1
+                }
+
+                let startOffset = timelineDragStartOffset ?? timelineContentOffset
+                timelineContentOffset = clampedTimelineOffset(startOffset - value.translation.width)
+                updateVisibleTimelineCenterPosition()
+            }
+            .onEnded { value in
+                defer { timelineDragStartOffset = nil }
+
+                guard abs(value.translation.width) <= timelineDragThreshold else {
+                    updateVisibleTimelineCenterPosition()
+                    return
+                }
+
                 guard let position = timelinePosition(atX: value.location.x) else { return }
                 snapTimeline(to: position)
             }
@@ -639,15 +664,15 @@ struct PomodoroPanelView: View {
         let distance = abs(position - visibleTimelineCenterPosition)
         switch distance {
         case 0:
-            return .timingCurve(0.37, 0, 0.63, 1, duration: 1.40)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 0.85)
         case 1:
-            return .timingCurve(0.37, 0, 0.63, 1, duration: 4.20)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 2.20)
         case 2:
-            return .timingCurve(0.37, 0, 0.63, 1, duration: 3.05)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 1.60)
         case 3:
-            return .timingCurve(0.37, 0, 0.63, 1, duration: 2.00)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 1.15)
         default:
-            return .easeInOut(duration: 1.20)
+            return .easeInOut(duration: 0.85)
         }
     }
 
