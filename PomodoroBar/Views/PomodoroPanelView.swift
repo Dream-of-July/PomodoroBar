@@ -574,7 +574,6 @@ struct PomodoroPanelView: View {
                 if isSelected {
                     Capsule()
                         .fill(Color(nsColor: .controlBackgroundColor).opacity(0.84))
-                        .shadow(color: .black.opacity(0.07), radius: 2, x: 0, y: 1)
                 } else if isHovering {
                     Capsule()
                         .fill(Color(nsColor: .controlBackgroundColor).opacity(0.32))
