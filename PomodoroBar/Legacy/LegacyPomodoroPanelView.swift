@@ -11,6 +11,7 @@ struct LegacyPomodoroPanelView: View {
     @State private var hoveredTimelinePosition: Int?
     @State private var isTimelinePointerInside = false
     @State private var timelineCenterGeneration = 0
+    @State private var centeredTimelinePosition: Int?
 
     private let panelWidth: CGFloat = 336
     private let panelPadding: CGFloat = 18
@@ -478,7 +479,9 @@ struct LegacyPomodoroPanelView: View {
             }
             .background(.quaternary, in: Capsule())
             .onAppear {
-                proxy.scrollTo(store.currentTimelinePositionInCycle, anchor: .center)
+                let position = store.currentTimelinePositionInCycle
+                centeredTimelinePosition = position
+                proxy.scrollTo(position, anchor: .center)
             }
             .onChange(of: store.currentTimelinePositionInCycle) { position in
                 scheduleTimelineCenter(position, proxy: proxy, delay: isTimelinePointerInside ? 1.6 : 0)
@@ -576,13 +579,24 @@ struct LegacyPomodoroPanelView: View {
     private func scheduleTimelineCenter(_ position: Int, proxy: ScrollViewProxy, delay: Double) {
         timelineCenterGeneration += 1
         let generation = timelineCenterGeneration
+        let duration = timelineCenterDuration(to: position)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             guard generation == timelineCenterGeneration else { return }
 
-            withAnimation(.easeInOut(duration: 0.95)) {
+            withAnimation(.easeInOut(duration: duration)) {
                 proxy.scrollTo(position, anchor: .center)
             }
+            centeredTimelinePosition = position
         }
+    }
+
+    private func timelineCenterDuration(to position: Int) -> Double {
+        guard let centeredTimelinePosition else { return 1.05 }
+
+        let distance = abs(position - centeredTimelinePosition)
+        guard distance > 0 else { return 0.75 }
+
+        return max(0.95, 1.25 - Double(distance - 1) * 0.10)
     }
 }
