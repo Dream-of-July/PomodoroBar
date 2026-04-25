@@ -485,7 +485,7 @@ struct LegacyPomodoroPanelView: View {
         .overlay {
             TimelineScrollWheelView { deltaX in
                 timelineCenterGeneration += 1
-                timelineContentOffset = clampedTimelineOffset(timelineContentOffset + deltaX)
+                timelineContentOffset = clampedTimelineOffset(timelineContentOffset - deltaX)
                 updateVisibleTimelineCenterPosition()
             }
         }
@@ -672,15 +672,15 @@ struct LegacyPomodoroPanelView: View {
         let distance = abs(position - visibleTimelineCenterPosition)
         switch distance {
         case 0:
-            return .timingCurve(0.37, 0, 0.63, 1, duration: 0.85)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 0.7)
         case 1:
-            return .timingCurve(0.37, 0, 0.63, 1, duration: 2.20)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 1.0)
         case 2:
-            return .timingCurve(0.37, 0, 0.63, 1, duration: 1.60)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 0.95)
         case 3:
-            return .timingCurve(0.37, 0, 0.63, 1, duration: 1.15)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 0.9)
         default:
-            return .easeInOut(duration: 0.85)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 0.85)
         }
     }
 
