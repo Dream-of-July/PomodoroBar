@@ -551,10 +551,7 @@ struct LegacyPomodoroPanelView: View {
 
     private func snapTimeline(to position: Int) {
         guard position != store.currentTimelinePositionInCycle else { return }
-
-        withAnimation(.easeInOut(duration: 1.6)) {
-            store.moveToTimelinePositionInCurrentCycle(position)
-        }
+        store.moveToTimelinePositionInCurrentCycle(position)
     }
 
     private func timelineSelectionGesture() -> some Gesture {
@@ -583,7 +580,7 @@ struct LegacyPomodoroPanelView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             guard generation == timelineCenterGeneration else { return }
 
-            withAnimation(.easeInOut(duration: 1.6)) {
+            withAnimation(.easeInOut(duration: 0.95)) {
                 proxy.scrollTo(position, anchor: .center)
             }
         }
