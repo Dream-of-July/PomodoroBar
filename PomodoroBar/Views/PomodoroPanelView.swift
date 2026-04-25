@@ -85,6 +85,7 @@ struct PomodoroPanelView: View {
                 .font(.system(size: 56, weight: .semibold, design: .rounded))
                 .monospacedDigit()
                 .contentTransition(.numericText())
+                .animation(.smooth(duration: 0.35), value: store.formattedRemainingTime)
 
             Text(store.nextPhaseSummary)
                 .font(.callout)
@@ -481,6 +482,13 @@ struct PomodoroPanelView: View {
         .contentShape(Capsule())
         .clipped()
         .background(.quaternary, in: Capsule())
+        .overlay {
+            TimelineScrollWheelView { deltaX in
+                timelineCenterGeneration += 1
+                timelineContentOffset = clampedTimelineOffset(timelineContentOffset + deltaX)
+                updateVisibleTimelineCenterPosition()
+            }
+        }
         .gesture(timelineInteractionGesture())
         .onAppear {
             let position = store.currentTimelinePositionInCycle
@@ -676,4 +684,37 @@ struct PomodoroPanelView: View {
         }
     }
 
+}
+
+private struct TimelineScrollWheelView: NSViewRepresentable {
+    let onScroll: (CGFloat) -> Void
+
+    func makeNSView(context: Context) -> ScrollWheelCatcherView {
+        let view = ScrollWheelCatcherView()
+        view.onScroll = onScroll
+        return view
+    }
+
+    func updateNSView(_ nsView: ScrollWheelCatcherView, context: Context) {
+        nsView.onScroll = onScroll
+    }
+
+    final class ScrollWheelCatcherView: NSView {
+        var onScroll: ((CGFloat) -> Void)?
+
+        override var acceptsFirstResponder: Bool { true }
+
+        override func scrollWheel(with event: NSEvent) {
+            let horizontalDelta = event.scrollingDeltaX
+            let verticalDelta = event.modifierFlags.contains(.shift) ? event.scrollingDeltaY : 0
+            let delta = abs(horizontalDelta) >= abs(verticalDelta) ? horizontalDelta : verticalDelta
+
+            guard delta != 0 else {
+                super.scrollWheel(with: event)
+                return
+            }
+
+            onScroll?(delta)
+        }
+    }
 }
