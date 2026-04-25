@@ -612,15 +612,15 @@ struct LegacyPomodoroPanelView: View {
         let distance = abs(position - visibleTimelineCenterPosition)
         switch distance {
         case 0:
-            return .linear(duration: 1.10)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 1.40)
         case 1:
-            return .linear(duration: 3.20)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 4.20)
         case 2:
-            return .linear(duration: 2.35)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 3.05)
         case 3:
-            return .easeInOut(duration: 1.55)
+            return .timingCurve(0.37, 0, 0.63, 1, duration: 2.00)
         default:
-            return .easeInOut(duration: 1.00)
+            return .easeInOut(duration: 1.20)
         }
     }
 
