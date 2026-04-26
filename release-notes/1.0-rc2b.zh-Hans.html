@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <title>PomodoroBar 1.0 RC 2b</title>
+  <style>
+    body {
+      color: -apple-system-label;
+      font: -apple-system-body;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      font: -apple-system-headline;
+      margin: 0 0 0.8em;
+    }
+
+    ul {
+      margin: 0;
+      padding-inline-start: 1.2em;
+    }
+
+    li + li {
+      margin-top: 0.45em;
+    }
+  </style>
+</head>
+<body>
+  <h2>PomodoroBar 1.0 RC 2b</h2>
+  <ul>
+    <li>修复更新状态恢复问题：App 重启或取消 Release Note 弹窗后，顶部更新按钮仍可继续恢复。</li>
+    <li>增加带节流的冷启动更新检查，让刚打开 App 时不用等到每日 Sparkle 调度。</li>
+    <li>修复手动调整系统时间后 Sparkle 检查时间落到未来导致更新不触发的问题。</li>
+    <li>继续保持主版和 Legacy 独立 appcast，并按 App 语言展示 Release Note。</li>
+  </ul>
+</body>
+</html>

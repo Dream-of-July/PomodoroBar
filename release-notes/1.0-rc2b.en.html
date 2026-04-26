@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PomodoroBar 1.0 RC 2b</title>
+  <style>
+    body {
+      color: -apple-system-label;
+      font: -apple-system-body;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      font: -apple-system-headline;
+      margin: 0 0 0.8em;
+    }
+
+    ul {
+      margin: 0;
+      padding-inline-start: 1.2em;
+    }
+
+    li + li {
+      margin-top: 0.45em;
+    }
+  </style>
+</head>
+<body>
+  <h2>PomodoroBar 1.0 RC 2b</h2>
+  <ul>
+    <li>Fixes the updater state so the top update button can recover after the app relaunches or the release notes dialog is canceled.</li>
+    <li>Adds a throttled launch-time update check so fresh installs can discover updates without waiting for the daily Sparkle schedule.</li>
+    <li>Repairs future-dated Sparkle check times caused by manual system clock changes.</li>
+    <li>Keeps main and Legacy builds on separate appcasts with localized release notes.</li>
+  </ul>
+</body>
+</html>

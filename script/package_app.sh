@@ -2,7 +2,8 @@
 set -euo pipefail
 
 APP_NAME="PomodoroBar"
-APP_VERSION="1.0 RC2"
+APP_VERSION="1.0 RC 2b"
+INSTALL_TO_APPLICATIONS="${INSTALL_TO_APPLICATIONS:-1}"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$ROOT_DIR/PomodoroBar.xcodeproj"
 DERIVED_DATA="$ROOT_DIR/build/DerivedData"
@@ -77,12 +78,16 @@ verify_private_signature "$SIGNED_APP"
 
 /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$DIST_APP"
 
-rm -rf "$APPLICATIONS_APP"
-/usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$APPLICATIONS_APP"
-clear_extended_attributes "$APPLICATIONS_APP"
-/usr/bin/codesign --force --deep --sign - "$APPLICATIONS_APP"
-verify_private_signature "$APPLICATIONS_APP"
-/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -f -R -trusted "$APPLICATIONS_APP"
+if [[ "$INSTALL_TO_APPLICATIONS" == "1" ]]; then
+  rm -rf "$APPLICATIONS_APP"
+  /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$APPLICATIONS_APP"
+  clear_extended_attributes "$APPLICATIONS_APP"
+  /usr/bin/codesign --force --deep --sign - "$APPLICATIONS_APP"
+  verify_private_signature "$APPLICATIONS_APP"
+  /System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -f -R -trusted "$APPLICATIONS_APP"
+  echo "Installed: $APPLICATIONS_APP"
+else
+  echo "Install skipped: $APPLICATIONS_APP"
+fi
 
 echo "Packaged: $DIST_APP"
-echo "Installed: $APPLICATIONS_APP"

@@ -39,9 +39,9 @@ PomodoroBar is a lightweight macOS menu bar Pomodoro timer built with SwiftUI. I
 
 Download the latest build from [GitHub Releases](https://github.com/Dream-of-July/PomodoroBar/releases).
 
-- `PomodoroBar_1.0 RC2.dmg`：主版本，适用于 macOS 26.0 或更新版本。<br>
+- `PomodoroBar_1.0 RC 2b.dmg`：主版本，适用于 macOS 26.0 或更新版本。<br>
   Main build for macOS 26.0 or later.
-- `PomodoroBarLegacy_1.0 RC2.dmg`：旧系统版本，适用于 macOS 13.0 或更新版本。<br>
+- `PomodoroBarLegacy_1.0 RC 2b.dmg`：旧系统版本，适用于 macOS 13.0 或更新版本。<br>
   Legacy build for macOS 13.0 or later.
 
 ## 系统要求 / Requirements
