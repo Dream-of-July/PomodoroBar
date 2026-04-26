@@ -34,6 +34,30 @@ clear_extended_attributes() {
   fi
 }
 
+verify_private_signature() {
+  local path="$1"
+  local details
+  details="$(/usr/bin/codesign -dvvv "$path" 2>&1)"
+
+  if ! /usr/bin/grep -q "Signature=adhoc" <<<"$details"; then
+    echo "Privacy check failed: $path is not ad hoc signed." >&2
+    echo "$details" >&2
+    exit 1
+  fi
+
+  if /usr/bin/grep -q "^Authority=" <<<"$details"; then
+    echo "Privacy check failed: $path contains certificate authority metadata." >&2
+    echo "$details" >&2
+    exit 1
+  fi
+
+  if /usr/bin/grep -q "^TeamIdentifier=" <<<"$details" && ! /usr/bin/grep -q "^TeamIdentifier=not set" <<<"$details"; then
+    echo "Privacy check failed: $path contains a team identifier." >&2
+    echo "$details" >&2
+    exit 1
+  fi
+}
+
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
 
 xcodebuild \
@@ -54,6 +78,7 @@ mkdir -p "$PACKAGE_ROOT" "$STAGING_DIR"
 
 clear_extended_attributes "$SIGNED_APP"
 /usr/bin/codesign --force --deep --sign - "$SIGNED_APP"
+verify_private_signature "$SIGNED_APP"
 
 /usr/bin/lipo -info "$SIGNED_APP/Contents/MacOS/$APP_NAME" | /usr/bin/grep -q "arm64"
 /usr/bin/lipo -info "$SIGNED_APP/Contents/MacOS/$APP_NAME" | /usr/bin/grep -q "x86_64"
@@ -62,6 +87,7 @@ clear_extended_attributes "$SIGNED_APP"
 /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$STAGING_DIR/$APP_NAME.app"
 clear_extended_attributes "$STAGING_DIR/$APP_NAME.app"
 /usr/bin/codesign --force --deep --sign - "$STAGING_DIR/$APP_NAME.app"
+verify_private_signature "$STAGING_DIR/$APP_NAME.app"
 ln -s /Applications "$STAGING_DIR/Applications"
 
 /usr/bin/hdiutil create \

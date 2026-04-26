@@ -126,9 +126,9 @@ For local update testing, generate the appcast with `RELEASE_URL=http://127.0.0.
 
 ## 注意 / Notes
 
-PomodoroBar 目前使用本地/开发者签名。如果公开分发未公证版本，用户可能需要在 macOS 的“隐私与安全性”里手动允许打开。
+PomodoroBar 的默认打包脚本使用 ad hoc 签名，并会检查产物里没有证书 authority 或 team identifier，避免把个人开发者证书姓名等隐私信息写进发布包。公开分发未公证版本时，用户可能需要在 macOS 的“隐私与安全性”里手动允许打开。
 
-PomodoroBar is currently local/developer signed. If you distribute an unnotarized build publicly, users may need to allow it manually in macOS Privacy & Security.
+PomodoroBar's default packaging scripts use ad hoc signing and verify that the app does not contain certificate authority or team identifier metadata, avoiding personal developer certificate names in release artifacts. If you distribute an unnotarized build publicly, users may need to allow it manually in macOS Privacy & Security.
 
 ## 许可证 / License
 

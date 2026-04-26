@@ -31,15 +31,41 @@ clear_extended_attributes() {
   fi
 }
 
+verify_private_signature() {
+  local path="$1"
+  local details
+  details="$(/usr/bin/codesign -dvvv "$path" 2>&1)"
+
+  if ! /usr/bin/grep -q "Signature=adhoc" <<<"$details"; then
+    echo "Privacy check failed: $path is not ad hoc signed." >&2
+    echo "$details" >&2
+    exit 1
+  fi
+
+  if /usr/bin/grep -q "^Authority=" <<<"$details"; then
+    echo "Privacy check failed: $path contains certificate authority metadata." >&2
+    echo "$details" >&2
+    exit 1
+  fi
+
+  if /usr/bin/grep -q "^TeamIdentifier=" <<<"$details" && ! /usr/bin/grep -q "^TeamIdentifier=not set" <<<"$details"; then
+    echo "Privacy check failed: $path contains a team identifier." >&2
+    echo "$details" >&2
+    exit 1
+  fi
+}
+
 rm -rf "$STAGING_DIR" "$DMG_PATH" "$VERSIONED_DMG_PATH" "$DIST_DIR/PomodoroBar Universal.app" "$DIST_DIR/PomodoroBarUniversal.dmg" "$DIST_DIR/PomodoroBarUniversal_${APP_VERSION}.dmg" "$TMP_DMG" "$TMP_FINAL_DMG"
 mkdir -p "$STAGING_DIR"
 find "$DIST_DIR" -maxdepth 1 -name "${APP_NAME}_v*.dmg" ! -name "${APP_NAME}_${APP_VERSION}.dmg" -delete
 
 clear_extended_attributes "$SIGNED_APP"
 /usr/bin/codesign --force --deep --sign - "$SIGNED_APP"
+verify_private_signature "$SIGNED_APP"
 /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$STAGING_DIR/$APP_NAME.app"
 clear_extended_attributes "$STAGING_DIR/$APP_NAME.app"
 /usr/bin/codesign --force --deep --sign - "$STAGING_DIR/$APP_NAME.app"
+verify_private_signature "$STAGING_DIR/$APP_NAME.app"
 ln -s /Applications "$STAGING_DIR/Applications"
 
 /usr/bin/hdiutil create \
