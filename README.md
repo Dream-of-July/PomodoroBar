@@ -8,26 +8,26 @@ PomodoroBar is a lightweight macOS menu bar Pomodoro timer built with SwiftUI. I
 
 ## 功能 / Features
 
-- 菜单栏倒计时，显示当前阶段图标和进度百分比<br>
-  Menu bar countdown with the current phase icon and progress percentage.
-- 全新沙漏图标，支持浅色、深色、透明和着色外观<br>
-  New hourglass app icon with light, dark, clear, and tinted appearances.
-- 专注阶段的菜单栏沙漏会根据剩余时间自动变化<br>
-  Focus hourglass in the menu bar changes automatically as time runs down.
-- 支持专注、短休息、长休息三个阶段<br>
-  Focus, short break, and long break phases.
-- 每轮结束后自动切换到下一个阶段，每完成 4 轮专注后进入长休息<br>
-  Automatic phase switching after each session, with a long break after every 4 focus rounds.
-- 支持开始、暂停、重置、跳过和退出<br>
-  Start, pause, reset, skip, and quit controls.
-- 自动保存当天完成的专注次数，并支持悬停后快速清除当天计数<br>
-  Saves the daily completed-focus count locally, with hover-to-clear support for today's count.
+- 菜单栏倒计时，显示当前阶段图标和剩余时间<br>
+  Menu bar countdown with the current phase icon and remaining time.
+- 专注、短休息、长休息三个阶段，支持自定义时长<br>
+  Focus, short break, and long break phases with customizable durations.
+- 可自定义番茄节奏时间线，调整短休息/长休息顺序，最多 6 个番茄<br>
+  Custom rhythm timeline with reorderable short/long breaks, capped at 6 pomodoros.
+- 主页底部切换器会跟随用户设置的节奏同步，可直接点击阶段跳转<br>
+  Home timeline switcher stays in sync with the custom rhythm and supports direct phase switching.
+- 支持开始、暂停、重置、跳过和退出，重置会回到当前设置时长起点<br>
+  Start, pause, reset, skip, and quit controls; reset returns to the configured duration start.
+- 退出后再次打开会恢复之前的阶段和剩余时间<br>
+  Restores the previous phase and remaining time after relaunch.
+- 自动保存当天完成的专注次数，并支持快速清除当天计数<br>
+  Saves the daily completed-focus count locally and supports quick clearing for today's count.
+- 倒计时数字滚动动画，时间线滚动和点击回中更顺滑<br>
+  Rolling countdown digits with smoother timeline scrolling and recentering.
 - 首次冷启动时提示应用已在菜单栏运行<br>
   Shows a first-launch hint so users can find the app in the menu bar.
-- 系统通知和提示音<br>
-  System notifications and sounds.
-- 支持简体中文和英文界面<br>
-  Simplified Chinese and English localization.
+- 系统通知、提示音、简体中文和英文界面<br>
+  System notifications, sounds, and Simplified Chinese / English localization.
 - 提供本地 APP 和 DMG 打包脚本<br>
   Local APP and DMG packaging scripts.
 
