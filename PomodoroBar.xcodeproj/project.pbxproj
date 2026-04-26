@@ -439,7 +439,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -450,7 +450,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = "1.0 RC";
+				MARKETING_VERSION = "1.0 RC2";
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://github.com/Dream-of-July/PomodoroBar/releases/latest/download/appcast.xml";
@@ -469,7 +469,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -480,7 +480,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = "1.0 RC";
+				MARKETING_VERSION = "1.0 RC2";
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SPARKLE_FEED_URL = "https://github.com/Dream-of-July/PomodoroBar/releases/latest/download/appcast.xml";
@@ -503,7 +503,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -514,7 +514,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = "1.0 RC";
+				MARKETING_VERSION = "1.0 RC2";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar.Legacy;
 				PRODUCT_NAME = "PomodoroBar Legacy";
@@ -538,7 +538,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -549,7 +549,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = "1.0 RC";
+				MARKETING_VERSION = "1.0 RC2";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar.Legacy;
 				PRODUCT_NAME = "PomodoroBar Legacy";

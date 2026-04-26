@@ -35,7 +35,7 @@ generate_sparkle_appcast() {
     return 0
   fi
 
-  local release_tag="${RELEASE_TAG:-v1.0-rc}"
+  local release_tag="${RELEASE_TAG:-v1.0-rc2}"
   local release_url="${RELEASE_URL:-https://github.com/Dream-of-July/PomodoroBar/releases/download/$release_tag}"
   local update_dir="$DIST_DIR/sparkle/${appcast_name%.xml}"
   local output_appcast="$update_dir/$appcast_name"
@@ -46,8 +46,8 @@ generate_sparkle_appcast() {
   rm -rf "$update_dir"
   mkdir -p "$update_dir"
   /bin/cp "$archive_path" "$update_dir/$archive_name"
-  /bin/cp "$ROOT_DIR/release-notes/1.0-rc.en.html" "$DIST_DIR/1.0-rc.en.html"
-  /bin/cp "$ROOT_DIR/release-notes/1.0-rc.zh-Hans.html" "$DIST_DIR/1.0-rc.zh-Hans.html"
+  /bin/cp "$ROOT_DIR/release-notes/1.0-rc2.en.html" "$DIST_DIR/1.0-rc2.en.html"
+  /bin/cp "$ROOT_DIR/release-notes/1.0-rc2.zh-Hans.html" "$DIST_DIR/1.0-rc2.zh-Hans.html"
 
   local args=(
     --account "${SPARKLE_KEY_ACCOUNT:-PomodoroBar}"
@@ -76,8 +76,8 @@ generate_sparkle_appcast() {
 add_localized_release_notes() {
   local appcast="$1"
   local release_url="$2"
-  local en_url="$release_url/1.0-rc.en.html"
-  local zh_url="$release_url/1.0-rc.zh-Hans.html"
+  local en_url="$release_url/1.0-rc2.en.html"
+  local zh_url="$release_url/1.0-rc2.zh-Hans.html"
   local notes_xml
 
   notes_xml="$(printf '<sparkle:releaseNotesLink xml:lang="en">%s</sparkle:releaseNotesLink>\n        <sparkle:releaseNotesLink xml:lang="zh-Hans">%s</sparkle:releaseNotesLink>' "$en_url" "$zh_url")"

@@ -507,17 +507,19 @@ struct PomodoroPanelView: View {
     }
 
     private var syncedTimeline: some View {
-        HStack(spacing: timelineItemSpacing) {
-            ForEach(0..<store.timelinePositionCount, id: \.self) { position in
-                timelineItem(at: position)
+        ZStack(alignment: .leading) {
+            HStack(spacing: timelineItemSpacing) {
+                ForEach(0..<store.timelinePositionCount, id: \.self) { position in
+                    timelineItem(at: position)
+                }
             }
+            .padding(4)
+            .offset(x: -timelineContentOffset)
         }
-        .padding(4)
-        .offset(x: -timelineContentOffset)
         .frame(width: timelineViewportWidth, height: 38, alignment: .leading)
-        .contentShape(Capsule())
-        .clipped()
         .background(.quaternary, in: Capsule())
+        .clipShape(Capsule())
+        .contentShape(Capsule())
         .overlay {
             TimelineScrollWheelView { deltaX in
                 timelineCenterGeneration += 1

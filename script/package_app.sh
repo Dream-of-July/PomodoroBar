@@ -2,7 +2,7 @@
 set -euo pipefail
 
 APP_NAME="PomodoroBar"
-APP_VERSION="1.0 RC"
+APP_VERSION="1.0 RC2"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$ROOT_DIR/PomodoroBar.xcodeproj"
 DERIVED_DATA="$ROOT_DIR/build/DerivedData"
