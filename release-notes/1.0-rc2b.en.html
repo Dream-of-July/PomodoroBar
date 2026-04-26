@@ -29,10 +29,15 @@
 <body>
   <h2>PomodoroBar 1.0 RC 2b</h2>
   <ul>
+    <li>Adds automatic update checks powered by Sparkle.</li>
+    <li>Shows localized release notes before installing an update.</li>
+    <li>Downloads updates first, then asks before installing and relaunching.</li>
+    <li>Uses separate main and Legacy appcasts so each build only receives compatible updates.</li>
+    <li>Improves update packaging for faster app replacement.</li>
+    <li>Fixes the bottom rhythm selector mask so the selected pill is clipped by the rounded container correctly.</li>
     <li>Fixes the updater state so the top update button can recover after the app relaunches or the release notes dialog is canceled.</li>
     <li>Adds a throttled launch-time update check so fresh installs can discover updates without waiting for the daily Sparkle schedule.</li>
     <li>Repairs future-dated Sparkle check times caused by manual system clock changes.</li>
-    <li>Keeps main and Legacy builds on separate appcasts with localized release notes.</li>
   </ul>
 </body>
 </html>

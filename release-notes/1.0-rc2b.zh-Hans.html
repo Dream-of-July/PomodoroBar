@@ -29,10 +29,15 @@
 <body>
   <h2>PomodoroBar 1.0 RC 2b</h2>
   <ul>
+    <li>加入基于 Sparkle 的自动更新检查。</li>
+    <li>安装更新前会按照 App 当前语言展示对应的 Release Note。</li>
+    <li>更新会先下载，下载完成后再提示安装并重启。</li>
+    <li>主版和 Legacy 使用独立 appcast，确保每个版本只收到兼容更新。</li>
+    <li>优化更新包打包方式，让覆盖安装更快。</li>
+    <li>修复底部节奏选择器遮罩问题，让选中胶囊按圆角容器正确裁剪。</li>
     <li>修复更新状态恢复问题：App 重启或取消 Release Note 弹窗后，顶部更新按钮仍可继续恢复。</li>
     <li>增加带节流的冷启动更新检查，让刚打开 App 时不用等到每日 Sparkle 调度。</li>
     <li>修复手动调整系统时间后 Sparkle 检查时间落到未来导致更新不触发的问题。</li>
-    <li>继续保持主版和 Legacy 独立 appcast，并按 App 语言展示 Release Note。</li>
   </ul>
 </body>
 </html>
