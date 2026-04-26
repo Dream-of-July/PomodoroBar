@@ -2,7 +2,7 @@
 set -euo pipefail
 
 APP_NAME="PomodoroBar"
-APP_VERSION="1.0 Beta 4"
+APP_VERSION="1.0 Beta 5"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DIST_DIR="$ROOT_DIR/dist"
 APP_PATH="$DIST_DIR/$APP_NAME.app"
