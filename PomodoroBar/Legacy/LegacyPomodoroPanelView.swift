@@ -448,11 +448,7 @@ struct LegacyPomodoroPanelView: View {
             Button {
                 store.reset()
             } label: {
-                Label(String(localized: "action.reset"), systemImage: "arrow.counterclockwise")
-                    .labelStyle(.iconOnly)
-                    .font(.title2.weight(.bold))
-                    .frame(width: iconButtonWidth, height: controlHeight)
-                    .contentShape(Capsule())
+                controlIcon("arrow.counterclockwise")
             }
             .buttonStyle(.bordered)
             .help(String(localized: "action.reset"))
@@ -460,10 +456,20 @@ struct LegacyPomodoroPanelView: View {
             Button {
                 store.startPause()
             } label: {
-                Label(store.primaryActionTitle, systemImage: store.primaryActionSystemImage)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: controlHeight)
-                    .contentShape(Capsule())
+                HStack(spacing: 6) {
+                    Image(systemName: store.primaryActionSystemImage)
+                        .font(.title3.weight(.bold))
+                        .symbolRenderingMode(.monochrome)
+
+                    Text(store.primaryActionTitle)
+                        .font(.callout.weight(.bold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: controlHeight)
+                .contentShape(Capsule())
             }
             .buttonStyle(.borderedProminent)
             .keyboardShortcut(.space, modifiers: [])
@@ -471,16 +477,21 @@ struct LegacyPomodoroPanelView: View {
             Button {
                 store.skip()
             } label: {
-                Label(String(localized: "action.skip"), systemImage: "forward.end.fill")
-                    .labelStyle(.iconOnly)
-                    .frame(width: iconButtonWidth, height: controlHeight)
-                    .contentShape(Capsule())
+                controlIcon("forward.end.fill")
             }
             .buttonStyle(.bordered)
             .help(String(localized: "action.skip"))
         }
         .controlSize(.large)
         .font(.title3.weight(.semibold))
+    }
+
+    private func controlIcon(_ systemName: String) -> some View {
+        Image(systemName: systemName)
+            .font(.title2.weight(.bold))
+            .symbolRenderingMode(.monochrome)
+            .frame(width: iconButtonWidth, height: controlHeight)
+            .contentShape(Capsule())
     }
 
     private var footer: some View {
