@@ -15,6 +15,13 @@
 "action.skip" = "Skip";
 "action.quit" = "Quit";
 "action.cancel" = "Cancel";
+"action.ok" = "OK";
+"update.ready.button" = "Update";
+"update.ready.help" = "Install the downloaded update";
+"update.ready.titleFormat" = "PomodoroBar %@ is ready";
+"update.ready.message" = "Review the release notes before installing. The app will relaunch to finish the update.";
+"update.ready.noReleaseNotes" = "No release notes are available for this update.";
+"update.install" = "Update";
 
 "timer.nextPhaseFormat" = "Next: %@";
 "timer.roundFormat" = "Round %d/%d";

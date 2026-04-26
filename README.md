@@ -26,6 +26,8 @@ PomodoroBar is a lightweight macOS menu bar Pomodoro timer built with SwiftUI. I
   Rolling countdown digits with smoother timeline scrolling and recentering.
 - 首次冷启动时提示应用已在菜单栏运行<br>
   Shows a first-launch hint so users can find the app in the menu bar.
+- 每天自动检查更新，安装前展示对应语言的 Release Notes<br>
+  Checks for updates daily and shows localized release notes before installation.
 - 系统通知、提示音、简体中文和英文界面<br>
   System notifications, sounds, and Simplified Chinese / English localization.
 - 提供本地 APP 和 DMG 打包脚本<br>
@@ -37,9 +39,9 @@ PomodoroBar is a lightweight macOS menu bar Pomodoro timer built with SwiftUI. I
 
 Download the latest build from [GitHub Releases](https://github.com/Dream-of-July/PomodoroBar/releases).
 
-- `PomodoroBar_1.0 Beta 5.dmg`：主版本，适用于 macOS 26.0 或更新版本。<br>
+- `PomodoroBar_1.0 RC.dmg`：主版本，适用于 macOS 26.0 或更新版本。<br>
   Main build for macOS 26.0 or later.
-- `PomodoroBarLegacy_1.0 Beta 5.dmg`：旧系统版本，适用于 macOS 13.0 或更新版本。<br>
+- `PomodoroBarLegacy_1.0 RC.dmg`：旧系统版本，适用于 macOS 13.0 或更新版本。<br>
   Legacy build for macOS 13.0 or later.
 
 ## 系统要求 / Requirements
@@ -104,6 +106,23 @@ Build the legacy DMG file:
 ```bash
 ./script/package_legacy_dmg.sh
 ```
+
+生成 Sparkle appcast 前，请先让 Xcode 解析 Sparkle Swift Package，并生成一次 Sparkle EdDSA 密钥。正式发布时建议这样运行：
+
+Before generating Sparkle appcasts, resolve the Sparkle Swift Package in Xcode and create a Sparkle EdDSA key once. For release builds, prefer:
+
+```bash
+SPARKLE_PUBLIC_ED_KEY="your-public-ed-key" SPARKLE_REQUIRE_APPCAST=1 ./script/package_dmg.sh
+SPARKLE_PUBLIC_ED_KEY="your-public-ed-key" SPARKLE_REQUIRE_APPCAST=1 ./script/package_legacy_dmg.sh
+```
+
+脚本会在 `dist/` 里生成 DMG、`appcast.xml` / `appcast-legacy.xml`、双语 Release Notes，以及可用时的 delta update 文件。
+
+The scripts write DMGs, `appcast.xml` / `appcast-legacy.xml`, localized release notes, and delta update files into `dist/` when Sparkle tooling is available.
+
+本地测试更新流时，可以先用 `RELEASE_URL=http://127.0.0.1:8000` 生成 appcast，再从 `dist/` 启动一个 HTTP 服务，并用 `SPARKLE_FEED_URL=http://127.0.0.1:8000/appcast.xml` 或 `appcast-legacy.xml` 打测试包。
+
+For local update testing, generate the appcast with `RELEASE_URL=http://127.0.0.1:8000`, serve `dist/` over HTTP, then build a test app with `SPARKLE_FEED_URL=http://127.0.0.1:8000/appcast.xml` or `appcast-legacy.xml`.
 
 ## 注意 / Notes
 

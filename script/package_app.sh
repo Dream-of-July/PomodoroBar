@@ -2,7 +2,7 @@
 set -euo pipefail
 
 APP_NAME="PomodoroBar"
-APP_VERSION="1.0 Beta 5"
+APP_VERSION="1.0 RC"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$ROOT_DIR/PomodoroBar.xcodeproj"
 DERIVED_DATA="$ROOT_DIR/build/DerivedData"
@@ -13,6 +13,18 @@ PACKAGE_ROOT="/tmp/$APP_NAME-package"
 SIGNED_APP="$PACKAGE_ROOT/$APP_NAME.app"
 APPLICATIONS_APP="/Applications/$APP_NAME.app"
 
+clear_extended_attributes() {
+  local path="$1"
+  /usr/bin/xattr -cr "$path"
+  /usr/bin/find "$path" -exec /usr/bin/xattr -c {} \; >/dev/null 2>&1 || true
+  /usr/bin/find -H "$path" -exec /usr/bin/xattr -c {} \; >/dev/null 2>&1 || true
+  local sparkle_updater="$path/Contents/Frameworks/Sparkle.framework/Versions/Current/Updater.app"
+  if [[ -e "$sparkle_updater" ]]; then
+    /usr/bin/xattr -d com.apple.FinderInfo "$sparkle_updater" >/dev/null 2>&1 || true
+    /usr/bin/xattr -d 'com.apple.fileprovider.fpfs#P' "$sparkle_updater" >/dev/null 2>&1 || true
+  fi
+}
+
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
 
 xcodebuild \
@@ -21,6 +33,8 @@ xcodebuild \
   -configuration Release \
   -destination "generic/platform=macOS" \
   -derivedDataPath "$DERIVED_DATA" \
+  SPARKLE_FEED_URL="${SPARKLE_FEED_URL:-https://github.com/Dream-of-July/PomodoroBar/releases/latest/download/appcast.xml}" \
+  SPARKLE_PUBLIC_ED_KEY="${SPARKLE_PUBLIC_ED_KEY:-K3bwNLuBP5M9s+VX6DyZQVntWxGg6vMVlaxq2Bxkgow=}" \
   CODE_SIGNING_ALLOWED=NO \
   build
 
@@ -30,19 +44,17 @@ rm -rf "$DIST_APP" "$SIGNED_APP"
 mkdir -p "$PACKAGE_ROOT"
 /usr/bin/ditto --norsrc --noextattr "$RELEASE_APP" "$SIGNED_APP"
 
-/usr/bin/xattr -cr "$SIGNED_APP"
+clear_extended_attributes "$SIGNED_APP"
 /usr/bin/codesign --force --deep --sign - "$SIGNED_APP"
 
 /usr/bin/lipo -info "$SIGNED_APP/Contents/MacOS/$APP_NAME" | /usr/bin/grep -q "arm64"
 /usr/bin/lipo -info "$SIGNED_APP/Contents/MacOS/$APP_NAME" | /usr/bin/grep -q "x86_64"
 
 /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$DIST_APP"
-/usr/bin/xattr -cr "$DIST_APP"
-/usr/bin/codesign --force --deep --sign - "$DIST_APP"
 
 rm -rf "$APPLICATIONS_APP"
 /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$APPLICATIONS_APP"
-/usr/bin/xattr -cr "$APPLICATIONS_APP"
+clear_extended_attributes "$APPLICATIONS_APP"
 /usr/bin/codesign --force --deep --sign - "$APPLICATIONS_APP"
 /System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -f -R -trusted "$APPLICATIONS_APP"
 

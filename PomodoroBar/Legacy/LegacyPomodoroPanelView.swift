@@ -3,6 +3,7 @@ import SwiftUI
 
 struct LegacyPomodoroPanelView: View {
     @ObservedObject var store: LegacyPomodoroTimerStore
+    @StateObject private var updater = PomodoroAppUpdater.shared
     @State private var progressDraft: Double?
     @State private var isHoveringTodayCompletedCount = false
     @State private var isShowingDurationEditor = false
@@ -25,6 +26,8 @@ struct LegacyPomodoroPanelView: View {
     private let timelineItemSpacing: CGFloat = 4
     private let timelineViewportWidth: CGFloat = 224
     private let timelineDragThreshold: CGFloat = 5
+    private let headerPillHeight: CGFloat = 30
+    private let headerUpdateAnimation = Animation.timingCurve(0.37, 0, 0.63, 1, duration: 0.7)
 
     var body: some View {
         VStack(spacing: 16) {
@@ -45,37 +48,68 @@ struct LegacyPomodoroPanelView: View {
     }
 
     private var phaseHeader: some View {
+        LegacyFloatingUpdateHeaderLayout(spacing: 8) {
+            phaseHeaderSummary
+
+            if updater.hasReadyUpdate {
+                readyUpdateButton
+            }
+
+            roundButton
+        }
+        .animation(headerUpdateAnimation, value: updater.hasReadyUpdate)
+        .animation(headerUpdateAnimation, value: store.phase.title)
+        .animation(headerUpdateAnimation, value: store.status.title)
+    }
+
+    private var phaseHeaderSummary: some View {
         HStack(spacing: 10) {
             Image(systemName: store.phase.statusIcon(progress: store.displayedProgress))
                 .font(.title2.weight(.semibold))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(Color.accentColor)
+                .frame(width: 26)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(store.phase.title)
                     .font(.headline)
+                    .fixedSize(horizontal: true, vertical: false)
                 Text(store.status.title)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: true, vertical: false)
             }
+        }
+        .fixedSize(horizontal: true, vertical: false)
+    }
 
-            Spacer()
+    private var readyUpdateButton: some View {
+        Button {
+            updater.presentReadyUpdate()
+        } label: {
+            Label(String(localized: "update.ready.button"), systemImage: "arrow.down.circle.fill")
+                .font(.caption.weight(.bold))
+                .frame(height: headerPillHeight)
+        }
+        .buttonStyle(.borderedProminent)
+        .controlSize(.small)
+        .help(String(localized: "update.ready.help"))
+    }
 
-            Button {
-                isShowingRhythmEditor.toggle()
-            } label: {
-                Text(String(format: String(localized: "timer.roundFormat"), store.currentRoundInCycle, store.rhythmLength))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 9)
-                    .padding(.vertical, 5)
-                    .background(.quaternary, in: Capsule())
-            }
-            .buttonStyle(.plain)
-            .help(String(localized: "rhythm.edit.help"))
-            .popover(isPresented: $isShowingRhythmEditor, arrowEdge: .bottom) {
-                rhythmEditor
-            }
+    private var roundButton: some View {
+        Button {
+            isShowingRhythmEditor.toggle()
+        } label: {
+            Text(String(format: String(localized: "timer.roundFormat"), store.currentRoundInCycle, store.rhythmLength))
+                .font(.caption)
+                .lineLimit(1)
+                .frame(height: headerPillHeight)
+        }
+        .buttonStyle(.bordered)
+        .controlSize(.small)
+        .help(String(localized: "rhythm.edit.help"))
+        .popover(isPresented: $isShowingRhythmEditor, arrowEdge: .bottom) {
+            rhythmEditor
         }
     }
 
@@ -683,6 +717,86 @@ struct LegacyPomodoroPanelView: View {
         }
     }
 
+}
+
+private struct LegacyFloatingUpdateHeaderLayout: Layout {
+    let spacing: CGFloat
+
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) -> CGSize {
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let idealWidth = sizes.reduce(0) { $0 + $1.width } + CGFloat(max(subviews.count - 1, 0)) * spacing
+        let height = sizes.map(\.height).max() ?? 0
+
+        return CGSize(width: proposal.width ?? idealWidth, height: height)
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
+        guard !subviews.isEmpty else { return }
+
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let centerY = bounds.midY
+
+        if subviews.count == 2 {
+            subviews[0].place(
+                at: CGPoint(x: bounds.minX, y: centerY),
+                anchor: .leading,
+                proposal: ProposedViewSize(sizes[0])
+            )
+            subviews[1].place(
+                at: CGPoint(x: bounds.maxX, y: centerY),
+                anchor: .trailing,
+                proposal: ProposedViewSize(sizes[1])
+            )
+            return
+        }
+
+        guard subviews.count >= 3 else {
+            subviews[0].place(
+                at: CGPoint(x: bounds.minX, y: centerY),
+                anchor: .leading,
+                proposal: ProposedViewSize(sizes[0])
+            )
+            return
+        }
+
+        let leftSize = sizes[0]
+        let updateSize = sizes[1]
+        let roundSize = sizes[2]
+        let roundX = bounds.maxX - roundSize.width
+        let leftEndX = bounds.minX + leftSize.width
+        let gapWidth = roundX - leftEndX
+        let idealUpdateX = leftEndX + (gapWidth - updateSize.width) / 2
+        let minimumUpdateX = leftEndX + spacing
+        let maximumUpdateX = roundX - spacing - updateSize.width
+        let updateX = maximumUpdateX >= minimumUpdateX
+            ? min(max(idealUpdateX, minimumUpdateX), maximumUpdateX)
+            : maximumUpdateX
+
+        subviews[0].place(
+            at: CGPoint(x: bounds.minX, y: centerY),
+            anchor: .leading,
+            proposal: ProposedViewSize(leftSize)
+        )
+        subviews[1].place(
+            at: CGPoint(x: updateX, y: centerY),
+            anchor: .leading,
+            proposal: ProposedViewSize(updateSize)
+        )
+        subviews[2].place(
+            at: CGPoint(x: bounds.maxX, y: centerY),
+            anchor: .trailing,
+            proposal: ProposedViewSize(roundSize)
+        )
+    }
 }
 
 private struct TimelineScrollWheelView: NSViewRepresentable {

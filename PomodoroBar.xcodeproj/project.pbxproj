@@ -16,6 +16,8 @@
 		1A1000070000000000000007 /* PomodoroNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000090000000000000009 /* PomodoroNotifier.swift */; };
 		1A1000090000000000000009 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A8000010000000000000001 /* Localizable.strings */; };
 		1A1000110000000000000011 /* PomodoroBar.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1A2000140000000000000014 /* PomodoroBar.icon */; };
+		1A1000150000000000000015 /* PomodoroAppUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000150000000000000015 /* PomodoroAppUpdater.swift */; };
+		1A1000160000000000000016 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 1A7000020000000000000002 /* Sparkle */; };
 		1B1000010000000000000001 /* PomodoroBarLegacyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2000010000000000000001 /* PomodoroBarLegacyApp.swift */; };
 		1B1000020000000000000002 /* LegacyPomodoroTimerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2000020000000000000002 /* LegacyPomodoroTimerStore.swift */; };
 		1B1000030000000000000003 /* LegacyStatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2000030000000000000003 /* LegacyStatusLabelView.swift */; };
@@ -25,6 +27,8 @@
 		1B1000070000000000000007 /* PomodoroNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000090000000000000009 /* PomodoroNotifier.swift */; };
 		1B1000090000000000000009 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A8000010000000000000001 /* Localizable.strings */; };
 		1B1000110000000000000011 /* PomodoroBar.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1A2000140000000000000014 /* PomodoroBar.icon */; };
+		1B1000150000000000000015 /* PomodoroAppUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2000150000000000000015 /* PomodoroAppUpdater.swift */; };
+		1B1000160000000000000016 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 1A7000020000000000000002 /* Sparkle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +44,7 @@
 		1A2000110000000000000011 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1A2000120000000000000012 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		1A2000140000000000000014 /* PomodoroBar.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = PomodoroBar.icon; sourceTree = "<group>"; };
+		1A2000150000000000000015 /* PomodoroAppUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroAppUpdater.swift; sourceTree = "<group>"; };
 		1B2000010000000000000001 /* PomodoroBarLegacyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroBarLegacyApp.swift; sourceTree = "<group>"; };
 		1B2000020000000000000002 /* LegacyPomodoroTimerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyPomodoroTimerStore.swift; sourceTree = "<group>"; };
 		1B2000030000000000000003 /* LegacyStatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyStatusLabelView.swift; sourceTree = "<group>"; };
@@ -52,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A1000160000000000000016 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B1000160000000000000016 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				1A2000090000000000000009 /* PomodoroNotifier.swift */,
+				1A2000150000000000000015 /* PomodoroAppUpdater.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -175,6 +183,9 @@
 			dependencies = (
 			);
 			name = PomodoroBar;
+			packageProductDependencies = (
+				1A7000020000000000000002 /* Sparkle */,
+			);
 			productName = PomodoroBar;
 			productReference = 1A2000080000000000000008 /* PomodoroBar.app */;
 			productType = "com.apple.product-type.application";
@@ -192,6 +203,9 @@
 			dependencies = (
 			);
 			name = PomodoroBarLegacy;
+			packageProductDependencies = (
+				1A7000020000000000000002 /* Sparkle */,
+			);
 			productName = "PomodoroBar Legacy";
 			productReference = 1B2000050000000000000005 /* PomodoroBar Legacy.app */;
 			productType = "com.apple.product-type.application";
@@ -226,6 +240,9 @@
 				Base,
 			);
 			mainGroup = 1A4000010000000000000001;
+			packageReferences = (
+				1A7000030000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			productRefGroup = 1A4000080000000000000008 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -279,6 +296,7 @@
 				1A1000030000000000000003 /* TimerStatus.swift in Sources */,
 				1A1000040000000000000004 /* PomodoroTimerStore.swift in Sources */,
 				1A1000070000000000000007 /* PomodoroNotifier.swift in Sources */,
+				1A1000150000000000000015 /* PomodoroAppUpdater.swift in Sources */,
 				1A1000050000000000000005 /* StatusLabelView.swift in Sources */,
 				1A1000060000000000000006 /* PomodoroPanelView.swift in Sources */,
 			);
@@ -293,6 +311,7 @@
 				1B1000060000000000000006 /* TimerStatus.swift in Sources */,
 				1B1000020000000000000002 /* LegacyPomodoroTimerStore.swift in Sources */,
 				1B1000070000000000000007 /* PomodoroNotifier.swift in Sources */,
+				1B1000150000000000000015 /* PomodoroAppUpdater.swift in Sources */,
 				1B1000030000000000000003 /* LegacyStatusLabelView.swift in Sources */,
 				1B1000040000000000000004 /* LegacyPomodoroPanelView.swift in Sources */,
 			);
@@ -420,7 +439,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -431,9 +450,11 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = "1.0 Beta 5";
+				MARKETING_VERSION = "1.0 RC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SPARKLE_FEED_URL = "https://github.com/Dream-of-July/PomodoroBar/releases/latest/download/appcast.xml";
+				SPARKLE_PUBLIC_ED_KEY = "K3bwNLuBP5M9s+VX6DyZQVntWxGg6vMVlaxq2Bxkgow=";
 				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -448,7 +469,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -459,9 +480,11 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = "1.0 Beta 5";
+				MARKETING_VERSION = "1.0 RC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SPARKLE_FEED_URL = "https://github.com/Dream-of-July/PomodoroBar/releases/latest/download/appcast.xml";
+				SPARKLE_PUBLIC_ED_KEY = "K3bwNLuBP5M9s+VX6DyZQVntWxGg6vMVlaxq2Bxkgow=";
 				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -480,7 +503,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -491,10 +514,12 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = "1.0 Beta 5";
+				MARKETING_VERSION = "1.0 RC";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar.Legacy;
 				PRODUCT_NAME = "PomodoroBar Legacy";
+				SPARKLE_FEED_URL = "https://github.com/Dream-of-July/PomodoroBar/releases/latest/download/appcast-legacy.xml";
+				SPARKLE_PUBLIC_ED_KEY = "K3bwNLuBP5M9s+VX6DyZQVntWxGg6vMVlaxq2Bxkgow=";
 				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -513,7 +538,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = NO;
 				ENABLE_PREVIEWS = YES;
@@ -524,10 +549,12 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = "1.0 Beta 5";
+				MARKETING_VERSION = "1.0 RC";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.local.PomodoroBar.Legacy;
 				PRODUCT_NAME = "PomodoroBar Legacy";
+				SPARKLE_FEED_URL = "https://github.com/Dream-of-July/PomodoroBar/releases/latest/download/appcast-legacy.xml";
+				SPARKLE_PUBLIC_ED_KEY = "K3bwNLuBP5M9s+VX6DyZQVntWxGg6vMVlaxq2Bxkgow=";
 				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -565,6 +592,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1A7000030000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A7000020000000000000002 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A7000030000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1A7000010000000000000001 /* Project object */;
 }

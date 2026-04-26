@@ -4,6 +4,7 @@ import SwiftUI
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+        _ = PomodoroAppUpdater.shared
         Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(700))
             PomodoroNotifier.shared.requestAuthorization()

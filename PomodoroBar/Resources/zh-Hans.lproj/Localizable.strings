@@ -15,6 +15,13 @@
 "action.skip" = "跳过";
 "action.quit" = "退出";
 "action.cancel" = "取消";
+"action.ok" = "好";
+"update.ready.button" = "更新";
+"update.ready.help" = "安装已下载的更新";
+"update.ready.titleFormat" = "PomodoroBar %@ 已准备好";
+"update.ready.message" = "安装前请先查看 Release Note。安装时 App 会重启以完成更新。";
+"update.ready.noReleaseNotes" = "这个更新没有可显示的 Release Note。";
+"update.install" = "更新";
 
 "timer.nextPhaseFormat" = "下一个：%@";
 "timer.roundFormat" = "第 %d/%d 轮";

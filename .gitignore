@@ -19,3 +19,4 @@ icon/
 # Swift Package Manager, if added later
 .build/
 Package.resolved
+!PomodoroBar.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved

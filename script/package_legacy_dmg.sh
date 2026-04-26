@@ -4,7 +4,7 @@ set -euo pipefail
 TARGET_NAME="PomodoroBarLegacy"
 APP_NAME="PomodoroBar Legacy"
 DMG_BASENAME="PomodoroBarLegacy"
-APP_VERSION="1.0 Beta 5"
+APP_VERSION="1.0 RC"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$ROOT_DIR/PomodoroBar.xcodeproj"
 DERIVED_DATA="$ROOT_DIR/build/DerivedDataLegacy"
@@ -20,6 +20,20 @@ TMP_FINAL_DMG="/tmp/$DMG_BASENAME.dmg"
 VOLUME_NAME="$APP_NAME $APP_VERSION"
 STAGING_DIR="$PACKAGE_ROOT/dmg"
 
+source "$ROOT_DIR/script/sparkle_appcast.sh"
+
+clear_extended_attributes() {
+  local path="$1"
+  /usr/bin/xattr -cr "$path"
+  /usr/bin/find "$path" -exec /usr/bin/xattr -c {} \; >/dev/null 2>&1 || true
+  /usr/bin/find -H "$path" -exec /usr/bin/xattr -c {} \; >/dev/null 2>&1 || true
+  local sparkle_updater="$path/Contents/Frameworks/Sparkle.framework/Versions/Current/Updater.app"
+  if [[ -e "$sparkle_updater" ]]; then
+    /usr/bin/xattr -d com.apple.FinderInfo "$sparkle_updater" >/dev/null 2>&1 || true
+    /usr/bin/xattr -d 'com.apple.fileprovider.fpfs#P' "$sparkle_updater" >/dev/null 2>&1 || true
+  fi
+}
+
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
 
 xcodebuild \
@@ -28,6 +42,8 @@ xcodebuild \
   -configuration Release \
   -destination "generic/platform=macOS" \
   -derivedDataPath "$DERIVED_DATA" \
+  SPARKLE_FEED_URL="${SPARKLE_FEED_URL:-https://github.com/Dream-of-July/PomodoroBar/releases/latest/download/appcast-legacy.xml}" \
+  SPARKLE_PUBLIC_ED_KEY="${SPARKLE_PUBLIC_ED_KEY:-K3bwNLuBP5M9s+VX6DyZQVntWxGg6vMVlaxq2Bxkgow=}" \
   CODE_SIGNING_ALLOWED=NO \
   build
 
@@ -36,17 +52,15 @@ rm -rf "$DIST_APP" "$SIGNED_APP" "$STAGING_DIR" "$DMG_PATH" "$VERSIONED_DMG_PATH
 mkdir -p "$PACKAGE_ROOT" "$STAGING_DIR"
 /usr/bin/ditto --norsrc --noextattr "$RELEASE_APP" "$SIGNED_APP"
 
-/usr/bin/xattr -cr "$SIGNED_APP"
+clear_extended_attributes "$SIGNED_APP"
 /usr/bin/codesign --force --deep --sign - "$SIGNED_APP"
 
 /usr/bin/lipo -info "$SIGNED_APP/Contents/MacOS/$APP_NAME" | /usr/bin/grep -q "arm64"
 /usr/bin/lipo -info "$SIGNED_APP/Contents/MacOS/$APP_NAME" | /usr/bin/grep -q "x86_64"
 
 /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$DIST_APP"
-/usr/bin/xattr -cr "$DIST_APP"
-/usr/bin/codesign --force --deep --sign - "$DIST_APP"
 /usr/bin/ditto --norsrc --noextattr "$SIGNED_APP" "$STAGING_DIR/$APP_NAME.app"
-/usr/bin/xattr -cr "$STAGING_DIR/$APP_NAME.app"
+clear_extended_attributes "$STAGING_DIR/$APP_NAME.app"
 /usr/bin/codesign --force --deep --sign - "$STAGING_DIR/$APP_NAME.app"
 ln -s /Applications "$STAGING_DIR/Applications"
 
@@ -58,12 +72,12 @@ ln -s /Applications "$STAGING_DIR/Applications"
   "$TMP_DMG"
 
 /usr/bin/hdiutil convert "$TMP_DMG" \
-  -format UDZO \
-  -imagekey zlib-level=9 \
+  -format ULFO \
   -o "$TMP_FINAL_DMG"
 
 /bin/cp "$TMP_FINAL_DMG" "$DMG_PATH"
 /bin/cp "$TMP_FINAL_DMG" "$VERSIONED_DMG_PATH"
+generate_sparkle_appcast "$VERSIONED_DMG_PATH" "appcast-legacy.xml" "13.0.0"
 rm -rf "$STAGING_DIR" "$TMP_DMG" "$TMP_FINAL_DMG"
 
 echo "Legacy app: $DIST_APP"
