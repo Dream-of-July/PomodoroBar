@@ -1,8 +1,6 @@
 {
   "color-space-for-untagged-svg-colors" : "display-p3",
-  "fill" : {
-    "solid" : "display-p3:0.71874,0.73434,0.96783,1.00000"
-  },
+  "fill" : "automatic",
   "groups" : [
     {
       "blur-material" : 0.5,
@@ -11,7 +9,7 @@
           "fill-specializations" : [
             {
               "value" : {
-                "solid" : "display-p3:0.21575,0.30058,0.82213,1.00000"
+                "automatic-gradient" : "display-p3:0.21575,0.30058,0.82213,1.00000"
               }
             },
             {

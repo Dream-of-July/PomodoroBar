@@ -99,11 +99,25 @@ private struct MenuBarOnboardingTip: View {
 
             HStack {
                 Spacer()
-                Button(String(localized: "onboarding.menuBarTip.dismiss")) {
+                Button {
                     dismiss()
+                } label: {
+                    Text(String(localized: "onboarding.menuBarTip.dismiss"))
+                        .font(.callout.weight(.bold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule()
+                                .fill(Color(red: 0.0, green: 0.48, blue: 1.0))
+                        )
+                        .overlay(
+                            Capsule()
+                                .stroke(.white.opacity(0.28), lineWidth: 1)
+                        )
+                        .shadow(color: .black.opacity(0.16), radius: 4, y: 1)
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
+                .buttonStyle(.plain)
             }
         }
         .padding(14)
